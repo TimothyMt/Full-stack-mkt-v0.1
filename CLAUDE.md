@@ -1,4 +1,4 @@
-# CLAUDE.md — Fullstack Marketing Skills
+# CLAUDE.md — Fullstack Marketing Skills v2.5.1
 
 ## Identity
 
@@ -13,18 +13,74 @@ Ngon ngu mac dinh: **Tieng Viet**. Thuat ngu chuyen mon giu nguyen tieng Anh (RO
 4. **Benchmark VN.** Dung so lieu thi truong Viet Nam 2025–2026, khong dung so lieu nuoc ngoai.
 5. **Cross-reference.** Khi output cua skill nay can input tu skill khac, goi skill do.
 
+## Cau truc thu muc skills (sau khi install)
+
+```
+~/.claude/skills/marketing/          ← Global install
+  CLAUDE.md                          ← File nay
+  skills/
+    vi/                              ← 22 skills tieng Viet (00–21, 29)
+    en/                              ← 22 skills tieng Anh (00–21, 29)
+  modules/
+    personal-branding/
+      vi/                            ← Skills 22–28 tieng Viet
+      en/                            ← Skills 22–28 tieng Anh (global)
+    dropshipping/
+      en/                            ← Skill 29 global
+  workflows/
+    vi/                              ← 4 workflows tieng Viet
+    en/                              ← 4 workflows tieng Anh
+  references/
+    vi/                              ← 8 reference files VN
+    en/                              ← 7 reference files EN
+  agents/                            ← 5 agent definitions
+  .agents-template/                  ← Template de copy vao project
+
+.agents/                             ← TAO O PROJECT ROOT (xem huong dan duoi)
+  product-marketing-context.md       ← Context san pham/thuong hieu
+  personal-brand-context.md          ← Context personal brand (neu can)
+```
+
+## Bat dau nhanh — Tao context file (QUAN TRONG)
+
+> **Truoc khi dung bat ky skill nao**, ban can tao file context tai goc project.
+> Neu khong co context file, skills se hoi ban nhap tay tung lan.
+
+**Buoc 1:** Mo terminal tai thu muc project cua ban
+
+**Buoc 2:** Tao thu muc `.agents/` va copy template:
+```bash
+# Mac / Linux
+mkdir -p .agents
+cp ~/.claude/skills/marketing/.agents-template/product-marketing-context.md .agents/
+
+# Windows (PowerShell)
+New-Item -ItemType Directory -Path .agents -Force
+Copy-Item "$env:USERPROFILE\.claude\skills\marketing\.agents-template\product-marketing-context.md" .agents\
+```
+
+**Buoc 3:** Mo file `.agents/product-marketing-context.md` va dien thong tin thuc te
+
+**Buoc 4:** Bat dau dung skills:
+```
+> Lap ke hoach marketing cho spa cua toi
+> Viet script TikTok ban ao dai
+> /skill 20-brief-client-intake
+```
+
 ## Cach su dung skill
 
 ### Tu dong nhan dien
 
 Khi user nhac den bat ky trigger nao trong skill, tu dong kich hoat skill tuong ung.
-Vi du: "viet copy quang cao" → kich hoat `05-copy-quang-cao.md`
+Vi du: "viet copy quang cao" → kich hoat `05-copy-quang-cao`
 
 ### Thu cong
 
 ```
 > /skill 00-ke-hoach-mkt
 > /skill 05-copy-quang-cao
+> /skill 22-personal-brand-context
 ```
 
 ### Skill chain (chuoi skill)
@@ -96,7 +152,7 @@ related:
 
 Khi user da ket noi MCP server cho nen tang quang cao, cac skill co the pull data tu dong thay vi yeu cau user paste.
 
-> **Reference day du:** `skills/references/mcp-ads-integration.md`
+> **Reference day du:** `references/vi/mcp-ads-integration.md`
 
 | Nen tang | MCP chinh thuc | MCP community tot nhat |
 |----------|---------------|----------------------|
@@ -118,10 +174,13 @@ Skills 04 (script video), 05 (copy quang cao) tu dong chuyen mode khi doc contex
 
 Khong can config thu cong — auto-detect.
 
+> **Luu y:** `.agents/` phai nam o **goc project** (cung cap voi CLAUDE.md cua project),
+> KHONG phai trong thu muc skills. Xem "Bat dau nhanh" o tren.
+
 ## Agents Universal Mode (v2.5.0+)
 
 5 agents (mkt-strategist, content-producer, performance-analyst, channel-operator, personal-brand-builder) tu dong detect cluster (VN vs Global) dua tren `.agents/` context files:
-- `product-marketing-context.md` only → MODE VN (skills/)
+- `product-marketing-context.md` only → MODE VN (skills/vi/)
 - `product-marketing-context-global.md` only → MODE GLOBAL (skills/en/)
 - Both → ASK 1 question
 - None → SUGGEST creating context
