@@ -2,7 +2,7 @@
 name: 08-nghien-cuu-doi-thu
 description: Phan tich doi thu canh tranh 3 tang (truc tiep, gian tiep, thu cap) — dinh vi, SWOT, content benchmark, tim khoang trong thi truong
 metadata:
-  version: 2.2.0
+  version: 2.3.0
   category: strategy
 triggers:
   - "nghien cuu doi thu"
@@ -222,9 +222,27 @@ Phuong phap uoc tinh (khong can chinh xac tuyet doi):
 
 ## Ban do dinh vi (Positioning Map)
 
-Ma tran 2x2 — chon 2 truc phu hop voi nganh:
+### Buoc 1: Hoi khach hang ve huong dinh vi
 
-### Truc mac dinh: Gia x Chat luong cam nhan
+**Truoc khi ve map**, hoi khach hang toi da 3 cau:
+
+1. **Ban muon dinh vi o dau tren truc gia? (Binh dan / Trung cap / Cao cap / Cao cap luxury)**
+   - Hay ban muon "chat luong cao voi gia hao hoa"?
+   - Hay ban muon "tien loi va de chap nhat nhat"?
+2. **Doi tuong chinh cua ban la ai?** (Dai chung hay niche cu the?)
+3. **Yeu to canh tranh cua ban la gi?** (Gia? Chat luong? Trai nghiem? Community? Toc do?)
+
+**Ghi nhan:**
+- Phan khuc gia ban chon: **[Lua chon cua khach hang]**
+- Yeu to khac biet chinh: **[Lua chon cua khach hang]**
+
+---
+
+### Buoc 2: Chon truc x-y phu hop
+
+Dua tren cau tra loi, chon ma tran 2x2 phu hop:
+
+#### Tuy chon 1: Gia x Chat luong cam nhan (Tong hop nhieu nganh)
 
 ```
         CHAT LUONG CAO
@@ -243,19 +261,69 @@ Ma tran 2x2 — chon 2 truc phu hop voi nganh:
         CHAT LUONG THAP
 ```
 
-### Truc thay the (tuy nganh)
+#### Tuy chon 2: Truyen thong vs Hien dai (Giao duc, cong nghe)
 
-| Truc X (ngang) | Truc Y (doc) | Phu hop voi nganh |
-|---------------|-------------|-------------------|
-| Gia | Chat luong cam nhan | Spa, F&B, thoi trang |
-| Truyen thong vs Hien dai | Dai chung vs Niche | Giao duc, cong nghe |
-| Tien loi vs Trai nghiem | Binh dan vs Cao cap | F&B, ban le |
-| Online vs Offline | Tu phuc vu vs Full service | Dich vu, SaaS |
+```
+           HIEN DAI
+             |
+    Doi thu X | [BAN]
+             |
+TRUYEN THONG -------- HIEN DAI
+             |
+             |
+          TRUYEN THONG
+```
 
-**Huong dan doc ban do:**
-- Goc ban o = vung canh tranh khoc liet, can tranh
-- Goc trong = khoang trong co the chiem
-- Goc dong = co nhieu doi thu, can yeu to khac biet manh
+#### Tuy chon 3: Tien loi vs Trai nghiem (F&B, ban le, dich vu)
+
+```
+        TRAI NGHIEM THAM MY
+             |
+    Doi thu C| [BAN]
+             |
+------- TIEN LOI ---- TRAI NGHIEM ----
+             |
+  Doi thu A  |  Doi thu B
+             |
+        TIEN LOI THUAN
+```
+
+#### Tuy chon 4: Online vs Offline (SaaS, dich vu, ban le)
+
+```
+           ONLINE TOAN
+             |
+    Doi thu X | [BAN]
+             |
+OFFLINE TOAN -------- ONLINE --------
+             |
+             |
+        OFFLINE TOAN
+```
+
+**Chon ma tran:** Dua tren yeu to canh tranh va nganh cua khach, chon 1 ma tran phia tren (hoac lap ma tran custom).
+
+---
+
+### Buoc 3: Phan tich vi tri chien luoc
+
+| | **Goc A: Canh tranh khoc liet** | **Goc B: Yeu to khac biet** | **Goc C: Trong** | **Goc D: Tram trong** |
+|---|---|---|---|---|
+| **Dac diem** | Tram day doi thu, gia canh tranh manh | Cach biet 1 khia canh, can tang them | Chua ai hoac it ai — co hoi | Tram cua 1 loai doi thu |
+| **Chien luoc** | Can yeu to khac biet SAC NET | Them 1–2 yeu to nua | CHIEM ghe nay, startup/reposition | Khong nen vao |
+
+**Vi tri hien tai cua khach:** [DINH VI ON THE MAP]
+
+**Recommendation:** [DUA TRE MOI DO CHI TIEN KHACH]
+
+---
+
+### Huong dan doc ban do:
+
+- **Goc A (trung tam)** = vung canh tranh khoc liet, nhieu doi thu → can tranh tru khong co yeu to khac biet rro
+- **Goc B (canh)** = it doi thu nhung can than voi gan tram → co hoi neu nang cap yeu to khac biet
+- **Goc C (trang trai)** = khoang trong — nen chiem neu co dung suc
+- **Goc D** = tram cua 1–2 doi thu → khong nen di vao nhamtag chat di vi
 
 ---
 
