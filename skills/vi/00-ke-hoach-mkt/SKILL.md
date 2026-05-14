@@ -34,12 +34,46 @@ related:
 
 ## Thu thap thong tin
 
-Hoi user toi da 4 cau truoc khi bat dau:
+### Buoc 0 — Doc customer_memory
 
-1. **San pham / dich vu gi?** Mo ta ngan gon, diem khac biet chinh, muc gia.
-2. **Khach hang muc tieu la ai?** Do tuoi, gioi tinh, khu vuc, hanh vi, noi dau lon nhat.
-3. **Muc tieu va ngan sach?** Doanh thu muc tieu/thang, ngan sach marketing (ads + content + nhan su), thoi gian chien dich.
-4. **Giai doan hien tai?** Launch moi / Growth / Mature? Da co kenh nao dang chay? Data hien co (follower, email list, data khach cu)?
+Truoc khi hoi, kiem tra memory:
+- `business.industry` co roi → skip cau hoi nganh, load variant tuong ung
+- `business.industry` chua co → hoi cau 1 duoi day, luu vao memory sau khi biet
+
+### Buoc 1 — Xac dinh mode output
+
+Hoi user:
+> "Ban muon ke hoach nay o dang nao?"
+> - **Quick** — tom tat chien luoc, doc tren Telegram
+> - **Full** — ke hoach day du, xuat ra Google Sheet hoac file Excel
+
+- `quick` → chi output Phan 1 (Strategy) + Phan 2 (SAVE) + Phan 5 (KPI)
+- `full` → output du 7 phan, moi phan la 1 tab trong Sheet/Excel
+
+### Buoc 2 — Detect nganh (neu chua co trong memory)
+
+| Nganh nguoi dung noi | Industry code | Variant ap dung |
+|----------------------|--------------|----------------|
+| Spa, beauty salon, nail, tham my khong xam lan | `spa` | Kenh: TikTok+FB+Zalo / KPI: Mess→Lead→Booking |
+| Phong kham, nha khoa, tham my co xam lan | `clinic` | Kenh: FB+Google+Zalo / KPI: Lead→Tu van→Deposit |
+| Nha hang, quan cafe, F&B | `fnb` | Kenh: TikTok+FB+GrabFood / KPI: Order+FootTraffic |
+| Gym, yoga, fitness studio | `fitness` | Kenh: FB+Zalo+Community / KPI: Trial→Member→Renew |
+| Khoa hoc, trung tam day them | `education` | Kenh: FB+Google+Zalo / KPI: Lead→Trial→Enroll |
+| Ecommerce, ban hang online | `ecommerce` | Kenh: TikTok+FB+Shopee / KPI: ROAS+CAC+LTV |
+| SaaS, phan mem, app | `saas` | Kenh: Google+LinkedIn+Email / KPI: Trial→Paid→MRR |
+| Bat dong san | `realestate` | Kenh: Google+FB+Batdongsan / KPI: Lead→Site visit→Deposit |
+| Nganh khac | `general` | Dung template chung, hoi them |
+
+Neu nganh chua co variant → dung `general` + ghi chu de bo sung sau.
+
+### Buoc 3 — Hoi toi da 3 cau con lai
+
+1. **Muc tieu cu the?** Doanh thu muc tieu/thang, so don/thang, hay KPI khac?
+2. **Ngan sach marketing?** Tong ngan sach/thang (ads + content + nhan su)?
+3. **Chu founder/chinh chu co san sang xuat hien tren content khong?** (Co / Khong / Thỉnh thoảng)
+   → Co → FGC 25–30% trong Source Type Mix
+   → Khong → Tang Brand Content + UGC bu vao, FGC = 0%
+   → Thinh thoang → FGC 10–15%
 
 ---
 
@@ -161,28 +195,21 @@ Hoi user toi da 4 cau truoc khi bat dau:
 
 > Tham khao `references/content-angles.md` de chon goc do cu the.
 
-### 3.3 Content Repurposing Matrix
+### 3.3 Nguyen tac san xuat noi dung
 
-> 1 noi dung goc = 7+ phien ban. Tham khao chi tiet tai `01-lich-noi-dung`.
-
-| Noi dung goc | Phien ban | Kenh |
-|-------------|-----------|------|
-| Video dai 3–5 phut | Nguyen ban | YouTube |
-| | 3 clip ngan 15–30s | TikTok, Reels |
-| | 1 carousel 5–7 slide | Facebook, Instagram |
-| | 1 bai blog 800–1500 tu | Website, SEO |
-| | 1 email newsletter | Email list |
-| | 3 quote card | Story, Threads |
-| | 1 audio clip | Podcast |
+- Moi noi dung goc duoc tai su dung toi thieu 3 dinh dang — chi tiet tai `01-lich-noi-dung`
+- Uu tien video ngan lam goc (TikTok/Reels) — tai su dung duoc nhieu nhat, chi phi thap nhat
 
 ### 3.4 Source Type Mix
 
-| Loai | Ti le | Mo ta |
-|------|-------|-------|
-| FGC (Founder Generated Content) | 30% | Noi dung tu founder/chuyen gia |
-| Brand Content | 30% | Noi dung chinh thuc thuong hieu |
-| UGC (User Generated Content) | 25% | Review, testimonial tu khach |
-| EGC (Employee Generated Content) | 15% | Noi dung tu nhan vien |
+> Ti le duoi day duoc dieu chinh tu dong dua tren tra loi cau hoi FGC o buoc Thu thap thong tin.
+
+| Loai | Founder xuat hien | Founder khong xuat hien | Founder thinh thoang |
+|------|------------------|------------------------|---------------------|
+| FGC (Founder Generated Content) | 25–30% | 0% | 10–15% |
+| Brand Content | 25–30% | 45–50% | 30–35% |
+| UGC (User Generated Content) | 25% | 35% | 30% |
+| EGC (Employee Generated Content) | 15–20% | 15–20% | 15–20% |
 
 ---
 
@@ -314,23 +341,35 @@ Doanh thu muc tieu: [so tien]
 
 ## Phan 7 — Timeline trien khai
 
-### 7.1 Roadmap tong the
+> Timeline duoi day theo **ket qua dat duoc**, khong theo lich. Moi giai doan chi chuyen sang giai doan tiep khi dieu kien dau vao duoc thoa man — co the mat 2 tuan hoac 3 thang tuy thuc te.
 
-| Tuan | Hang muc | Chi tiet | Output | Nguoi chiu trach nhiem |
-|------|----------|----------|--------|----------------------|
-| Tuan 1 | Setup & Research | Nghien cuu doi thu, insight khach hang, setup kenh | Bao cao nghien cuu, kenh da thiet lap | [ten] |
-| Tuan 2 | Content & Creative | San xuat batch content dau tien, brief UGC | 15–20 content pieces, 3–5 UGC brief | [ten] |
-| Tuan 3 | Launch & Test | Chay ads test, dang organic, bat dau nurture | A/B test report, data 7 ngay dau | [ten] |
-| Tuan 4 | Optimize & Scale | Toi uu creative, scale kenh tot, cut kenh kem | Bao cao thang 1, ke hoach thang 2 | [ten] |
+### 7.1 Cac giai doan theo ket qua
 
-### 7.2 Milestone
+| Giai doan | Dieu kien buoc vao | Viec can lam | Dieu kien chuyen sang giai doan tiep |
+|-----------|-------------------|-------------|--------------------------------------|
+| **1 — Khoi dong** | Chua co data, chua co winning creative | Setup kenh, san xuat 3–5 creative test, chay ads ngan sach thap | Co du lieu 2 tuan, CPMess < benchmark nganh |
+| **2 — Tim winning** | Da co data dau, biet kenh nao co tiem nang | A/B test creative, thu nghiem audience, do CPMess/CPL | ROAS > 2x lien tuc trong 2 tuan |
+| **3 — Scale** | ROAS on dinh > 2x, biet ro winning creative + audience | Tang ngan sach toi da 20%/tuan, nhan rong kenh tot, cat kenh kem | Doanh thu dat 70%+ muc tieu, he thong on dinh |
+| **4 — Duy tri** | Doanh thu dat muc tieu, he thong chay on | Giam paid dan, tang organic + retention, bat dau referral | Organic chiem 30%+ traffic, CAC giam lien tuc |
 
-| Thang | Milestone | KPI kiem tra |
-|-------|-----------|-------------|
-| Thang 1 | Setup xong, chay test, co data dau | CPMess, so mess, reach |
-| Thang 2 | Tim duoc winning creative + audience | ROAS, CPL, ti le chuyen doi |
-| Thang 3 | Scale kenh chinh, on dinh funnel | Doanh thu, LTV:CAC, retention |
-| Thang 6 | He thong tu van hanh, toi uu lien tuc | Tat ca KPI on dinh, organic tang |
+### 7.2 Viec can lam theo giai doan
+
+| Hang muc | Giai doan 1 | Giai doan 2 | Giai doan 3 | Giai doan 4 |
+|----------|-------------|-------------|-------------|-------------|
+| Ngan sach ads | 30–40% tong ngan sach | 50–60% | 60–70% | Giam dan 30–40% |
+| So creative chay | 3–5 (test) | 1–2 winning + 2–3 test moi | Scale winning, 1–2 test/tuan | Duy tri winning, test it hon |
+| Kenh tap trung | 1 kenh chinh | 1–2 kenh | 2–3 kenh | Kenh da chung minh |
+| Retention | Chua can | Bat dau thu thap contact | Setup Zalo OA + email | He thong day du |
+| Nguoi chiu trach nhiem | [ten] | [ten] | [ten] | [ten] |
+
+### 7.3 Dau hieu canh bao — Dung lai va xem xet lai
+
+| Dau hieu | Y nghia | Hanh dong |
+|---------|---------|----------|
+| CPMess tang > 30% sau 1 tuan scale | Creative fatigue hoac audience bao hoa | Tao creative moi, mo rong audience |
+| ROAS giam > 30% khi tang ngan sach | Scale qua nhanh | Giam ngan sach 20%, on dinh lai |
+| Ty le Mess→Lead giam > 20% | Van de tu van hoac chat luong lead | Kiem tra lai script tu van, retarget audience |
+| Khong chuyen sang giai doan 2 sau 4 tuan | Creative chua du tot hoac sai audience | Stop, review lai insight khach hang (Skill 09) |
 
 ---
 
@@ -352,10 +391,14 @@ Skill nay la master — goi cac skill con theo thu tu:
 ```
 
 Khi user yeu cau ke hoach marketing:
-1. Hoi 4 cau thu thap thong tin
-2. Chay skill 08, 09, 10 (co the song song)
-3. Tong hop thanh ke hoach nay
-4. De xuat chay tiep 01, 02 neu user can
+1. Doc customer_memory — neu da co industry, skip cau hoi nganh
+2. Xac dinh mode: quick hay full
+3. Neu chua co industry → detect tu input, luu vao memory
+4. Hoi 3 cau con lai (muc tieu, ngan sach, FGC)
+5. Chay skill 08, 09, 10 (co the song song)
+6. Tong hop thanh ke hoach — dung dung variant theo nganh
+7. Quick → tra loi tren Telegram / Full → xuat Sheet hoac Excel
+8. De xuat chay tiep 01, 02 neu user can
 
 ---
 

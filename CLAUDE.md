@@ -93,6 +93,7 @@ Mot so skill goi skill khac tu dong:
 - `22-personal-brand-context` → goi `23-personal-brand-strategy` + `24-ai-avatar-production` (Phase 1 typical)
 - `26-thought-leadership-content` doc context → `04-script-video` (Personal Brand Mode) → `01-lich-noi-dung`
 - `27-personal-brand-monetize` → `14-email-marketing` + `18-referral-program`
+- `30-retention-strategy` → goi `31-winback-campaign` (nhom khach da bo)
 
 ### Workflow
 
@@ -101,6 +102,7 @@ Workflow = chuoi skill chay lien tuc:
 - `campaign-launch` = 00 → 02 → 01 → 04 → 05 → 06 → 11
 - `monthly-cycle` = 13 → 03 → 07 → 01 → 10
 - `content-production` = 09 → 01 → 04 → 06
+- `retention-cycle` = 30 → 31 → 05 → 01 → 14
 - `personal-brand-launch` = 22 → 23 → 24 → 25 → 26 → 04(personal) → 27 → 28 → 14
 - `ai-avatar-batch` = 23 → 26 → 04(personal) → 25 → 24(batch) → 01
 - `personal-brand-monthly` = 13 → 03(personal) → 23 → 27 → 26 → 04(personal) → 07(personal)
@@ -199,6 +201,7 @@ Tat ca 5 agents la **universal** (v2.5.0+) — phuc vu CA hai cluster VN va Glob
 | content-producer | San xuat noi dung | 01, 04, 05, 06 |
 | performance-analyst | Phan tich hieu suat | 03, 07, 10, 13 |
 | channel-operator | Van hanh kenh | 11, 12, 14, 15 |
+| retention-specialist | Giu chan + win-back khach hang | 30, 31 |
 | personal-brand-builder | Thuong hieu ca nhan + AI Avatar | 22, 23, 24, 25, 26, 27, 28 |
 
 ## Benchmark nhanh — Vietnam 2025–2026
