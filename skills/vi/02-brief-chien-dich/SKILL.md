@@ -27,12 +27,43 @@ related:
 
 ## Thu thap thong tin
 
-Hoi user toi da 4 cau truoc khi bat dau:
+### Buoc 0 — Doc customer_memory
 
-1. **Chien dich gi?** Ra mat san pham / Seasonal (Tet, 8/3) / Brand awareness / Clearance sale / Re-launch?
-2. **Muc tieu chinh?** Tang doanh thu [so tien] / Tang follower [so luong] / Thu lead [so luong] / Brand awareness [reach muc tieu]?
-3. **Ngan sach va thoi gian?** Tong ngan sach, thoi gian chien dich (bao nhieu tuan), ngay bat dau.
-4. **Da co gi san?** Asset thuong hieu (logo, brand guide)? Testimonial/UGC? Data khach hang cu? Landing page?
+Truoc khi hoi, kiem tra memory:
+- `business.*` co roi → skip hoi lai thong tin thuong hieu, nganh, khach hang
+- `marketing_status.running_channels` co roi → dung luon cho Channel System
+- `customer_profile.*` co roi → Section 3 chi hoi them neu campaign nay co segment khac
+
+### Buoc 1 — Xac dinh mode output
+
+Hoi user:
+> "Ban muon brief o dang nao?"
+> - **Quick** — tom tat chien dich (Phan 1+2+4+7), doc tren Telegram
+> - **Full** — brief day du 9 phan → xuat Sheet hoac Excel
+
+### Buoc 2 — Xac dinh loai chien dich → chon phase model
+
+| Loai chien dich | Phase model | Ghi chu |
+|----------------|------------|---------|
+| Flash sale (1–3 ngay) | 2 phases: Bung manh 70% + Duy tri 30% | Khong can Teasing |
+| Ra mat san pham moi | 4 phases: Teasing 20% + Soft 20% + Launch 40% + Sustain 20% | Teasing dai hon |
+| Seasonal (Tet, 8/3, 20/10) | 4 phases: Teasing 15% + Soft 20% + Launch 40% + Sustain 25% | Giu nguyen mac dinh |
+| Retarget campaign | 1 phase: 100% conversion | Chi warm audience |
+| Brand awareness | 3 phases: Awareness 50% + Engagement 30% + Conversion 20% | Khong focus chot don |
+
+### Buoc 3 — Hoi nhung gi chua co trong memory (toi da 3 cau)
+
+1. **Chien dich gi + thoi gian?** Ten chien dich, ngay bat dau, thoi luong bao nhieu tuan
+2. **Ngan sach tong?** Bao nhieu, phan bo the nao (ads / content / khac)?
+3. **Da co gi san?** Asset hien co: UGC, testimonial, landing page, creative cu?
+
+### Buoc 4 — Xac dinh team → build RACI thuc te
+
+Hoi user 2 cau:
+1. **Team hien tai co bao nhieu nguoi lam marketing?** (tinh ca chu/founder neu truc tiep tham gia)
+2. **Cac vai tro / phong ban hien co la gi?** (VD: "chi co minh chu + 1 ban content" / "co team 4 nguoi: marketing manager, designer, content, ads" / "thue agency ngoai")
+
+→ Dua tren cau tra loi, tu dong tao RACI voi dung ten vai tro thuc te cua khach — khong dung ten chung chung.
 
 ---
 
@@ -90,26 +121,32 @@ Hoi user toi da 4 cau truoc khi bat dau:
 
 ## Phan 3 — Target Audience (Doi tuong muc tieu)
 
+> Doc tu `customer_memory.customer_profile` truoc. Chi hien thi bang duoi neu chua co trong memory hoac campaign nay co segment khac voi binh thuong.
+
+**Hoi them 1 cau neu memory da co:** "Chien dich nay co nham vao nhom khach hang khac binh thuong khong?"
+- Neu khong → dung nguyen tu memory, khong hoi them
+- Neu co → hoi mo ta segment moi, chi cap nhat phan khac biet
+
 ### 3.1 Chan dung khach hang
 
 | Thuoc tinh | Primary | Secondary |
 |-----------|---------|-----------|
-| Do tuoi | [khoang tuoi] | [khoang tuoi] |
-| Gioi tinh | [nam/nu/tat ca] | |
-| Khu vuc | [tinh/thanh] | |
-| Thu nhap | [khoang] | |
-| Nghe nghiep | [nghe] | |
-| Noi dau chinh | [van de lon nhat] | |
-| Mong muon | [dieu ho muon] | |
-| Rao can | [ly do chua mua] | |
-| Kenh ho dung | [TikTok/FB/Zalo/IG] | |
-| Ai anh huong ho | [nguoi/kenh tin tuong] | |
+| Do tuoi | [doc tu memory hoac hoi] | [khoang tuoi] |
+| Gioi tinh | [doc tu memory hoac hoi] | |
+| Khu vuc | [doc tu memory hoac hoi] | |
+| Thu nhap | [doc tu memory hoac hoi] | |
+| Nghe nghiep | [doc tu memory hoac hoi] | |
+| Noi dau chinh | [doc tu memory hoac hoi] | |
+| Mong muon | [doc tu memory hoac hoi] | |
+| Rao can | [doc tu memory hoac hoi] | |
+| Kenh ho dung | [doc tu memory hoac hoi] | |
+| Ai anh huong ho | [doc tu memory hoac hoi] | |
 
 ### 3.2 Insight khach hang
 
-> Goi skill `09-insight-khach-hang` de khai thac sau.
+> Doc tu `customer_memory.customer_profile.main_pain_points` truoc. Goi `09-insight-khach-hang` neu can khai thac sau hon.
 
-**Insight chinh:** [phat bieu insight]
+**Insight chinh:** [doc tu memory hoac phat bieu moi neu campaign co segment khac]
 
 ### 3.3 Insight Validation Checklist
 
@@ -220,12 +257,32 @@ Kiem tra xem insight co that su la insight hay chi la observation:
 
 ### 7.1 Phan bo ngan sach theo phase
 
+> Phase model duoc chon tu buoc Thu thap thong tin dua tren loai chien dich. Dien vao bang phu hop.
+
+**Flash sale (1–3 ngay):**
+
 | Phase | Thoi gian | % Ngan sach | Muc dich | Kenh chinh |
 |-------|----------|-------------|----------|------------|
-| Teasing | Tuan 1 (truoc launch) | 15% | Tao to mo, build anticipation | Organic TikTok/FB, Email teaser |
-| Bung nhe (Soft launch) | Tuan 2 | 20% | Test creative, thu data | Paid ads ngan sach nho, UGC |
-| Bung manh (Full launch) | Tuan 3–4 | 40% | Scale winning creative, chot don | Paid ads toan luc, retarget |
-| Duy tri (Sustain) | Tuan 5+ | 25% | Re-engage, retarget, thu hep | Retarget, email, Zalo nurture |
+| Bung manh | Ngay 1–2 | 70% | Chot don nhanh, tao urgency | Paid ads toan luc, Zalo blast |
+| Duy tri | Ngay 3 | 30% | Vot lai, retarget | Retarget, Messenger |
+
+**Ra mat san pham moi:**
+
+| Phase | Thoi gian | % Ngan sach | Muc dich | Kenh chinh |
+|-------|----------|-------------|----------|------------|
+| Teasing | Tuan 1–2 | 20% | Xay curiosity, thu email/follow | Organic, email teaser, UGC |
+| Soft launch | Tuan 3 | 20% | Test creative, thu data | Paid ads ngan sach nho |
+| Full launch | Tuan 4–6 | 40% | Scale, chot don | Paid ads toan luc, retarget |
+| Sustain | Tuan 7+ | 20% | Re-engage, cross-sell | Retarget, Zalo, email |
+
+**Seasonal / Chien dich dinh ky (Tet, 8/3, 20/10):**
+
+| Phase | Thoi gian | % Ngan sach | Muc dich | Kenh chinh |
+|-------|----------|-------------|----------|------------|
+| Teasing | Tuan 1 | 15% | Tao to mo, build anticipation | Organic TikTok/FB, email teaser |
+| Soft launch | Tuan 2 | 20% | Test creative, thu data | Paid ads ngan sach nho, UGC |
+| Full launch | Tuan 3–4 | 40% | Scale winning creative, chot don | Paid ads toan luc, retarget |
+| Sustain | Tuan 5+ | 25% | Re-engage, retarget | Retarget, email, Zalo nurture |
 
 ### 7.2 Chi tiet timeline
 
@@ -263,22 +320,43 @@ Kiem tra xem insight co that su la insight hay chi la observation:
 
 ### 8.2 RACI Matrix
 
-| Deliverable | Marketing Lead | Content Creator | Designer | Ads Specialist | Founder |
-|-------------|---------------|----------------|----------|---------------|---------|
-| Brief chien dich | **R** (Responsible) | I | I | I | **A** (Accountable) |
-| Creative production | A | **R** | **R** | C (Consulted) | I (Informed) |
-| Copy quang cao | A | **R** | I | C | I |
-| Setup ads | A | I | I | **R** | I |
-| Landing page | A | C | **R** | C | I |
-| UGC coordination | **R** | C | I | I | I |
-| Toi uu hang ngay | A | I | I | **R** | I |
-| Bao cao | **R** | C | I | C | **A** |
+> RACI duoi day duoc tao tu dong dua tren so luong va vai tro thuc te user cung cap o Buoc 4.
+> Cot = cac vai tro thuc te cua team (dung ten ho cung cap, khong dung ten mac dinh).
+> Hang = cac deliverable o Section 8.1.
 
-**Chu thich RACI:**
-- **R** (Responsible): Nguoi lam
-- **A** (Accountable): Nguoi chiu trach nhiem cuoi cung, duyet
-- **C** (Consulted): Duoc hoi y kien truoc khi lam
-- **I** (Informed): Duoc thong bao ket qua
+| Deliverable | [Vai tro 1] | [Vai tro 2] | [Vai tro 3] | ... |
+|------------|------------|------------|------------|-----|
+| [Deliverable 1] | R/A/C/I | | | |
+| [Deliverable 2] | | | | |
+| ... | | | | |
+
+**Vi du — "chi co minh + 1 ban content":**
+
+| Deliverable | Chu (Linh) | Nhan vien content (Hoa) |
+|------------|-----------|------------------------|
+| Brief chien dich | **A+R** | I |
+| San xuat creative | A | **R** |
+| Chay ads | **R** | I |
+| Toi uu + bao cao | **R** | C |
+
+**Vi du — "4 nguoi: marketing manager, designer, content, ads":**
+
+| Deliverable | MKT Manager | Designer | Content | Ads |
+|------------|------------|---------|---------|-----|
+| Brief chien dich | **A+R** | I | I | I |
+| Creative | A | **R** | **R** | C |
+| Copy | A | I | **R** | C |
+| Setup ads | A | I | I | **R** |
+| Toi uu | A | I | C | **R** |
+| Bao cao | **R** | I | C | C |
+
+**RACI la gi?** Ma tran phan cong trach nhiem — giup moi nguoi biet ro vai tro cua minh, tranh chong cheo hoac bo sot:
+- **R — Responsible** (Nguoi thuc hien): Nguoi truc tiep lam ra san pham do
+- **A — Accountable** (Nguoi chiu trach nhiem): Nguoi duyet cuoi, chiu trach nhiem neu sai
+- **C — Consulted** (Nguoi duoc hoi): Duoc hoi y kien truoc khi lam — co the phan bien
+- **I — Informed** (Nguoi duoc bao): Chi can biet ket qua, khong can tham gia
+
+> Moi deliverable phai co dung 1 chu **A** — neu co 2 nguoi cung chiu trach nhiem = khong ai chiu trach nhiem.
 
 ---
 
