@@ -84,12 +84,16 @@ File: `sub-agents/master-agent-critic.md`
 
 1. **session_context thay memory-first:** Skills nhận context từ Master Agent, không tự đọc DB
 2. **context_requirements trong YAML:** Khai báo fields cần từ session_context
-3. **Mode quick/full:** quick = Telegram response ngắn, full = export file .md đầy đủ
+3. **Output format — ĐÃ ĐỔI:** ~~quick/full~~ → **Telegram** = bullet point tóm tắt ý chính | **Full** = file hoàn chỉnh xuất qua Google Sheet (link GG Sheet của owner)
 4. **Industry-adaptive:** detect ngành từ context, chỉ hỏi nếu chưa có
 5. **Resource-adaptive:** template thay đổi theo quy mô team (1 người / 2–3 người / 4+)
 6. **Results-based timeline:** tiến theo kết quả đạt được, không theo lịch cố định
 7. **RACI với tên thật:** hỏi vai trò thực tế, mỗi deliverable đúng 1 A
 8. **Section markers trong output:** bắt buộc để Critic có thể flag chính xác
+9. **MCP skill 08:** Owner chủ động chạy MCP (Facebook Ads Library) — khách chỉ cần cung cấp link fanpage đối thủ, không cần khách tự setup
+10. **First conversation flow:** Handle bởi Master Agent — không cần sửa trong skill
+11. **Skill 02:** Thêm section "Tạo offer chiến dịch" — giá, gói, mechanic ưu đãi
+12. **Negative examples:** Mỗi skill cần thêm ví dụ output xấu vs output tốt cho section quan trọng để Claude có anchor cụ thể
 
 ---
 
@@ -98,49 +102,118 @@ File: `sub-agents/master-agent-critic.md`
 | Skill | Trạng thái | Ghi chú |
 |-------|-----------|---------|
 | 00-ke-hoach-mkt | ✅ Done | session_context, mode, 8 ngành, results-based timeline |
-| 01-lich-noi-dung | ✅ Done | session_context, mode, resource-adaptive template |
-| 02-brief-chien-dich | ✅ Done | session_context, mode, 5 phase models, RACI adaptive |
-| 03-danh-gia-hieu-suat | ✅ Done | session_context, mode quick/full, dynamic action plan, benchmark +2 ngành |
-| 30-retention-strategy | ✅ Done | Skill mới — retention framework 3 giai đoạn, 4 nhóm khách |
-| 31-winback-campaign | ✅ Done | Skill mới — sequence 3 bước, test-first 10% |
-| **04–29** | ⏳ Chưa làm | Tiếp tục review theo thứ tự |
+| 01-lich-noi-dung | ✅ Done | Adaptive team size (số người × 3–4 bài/tuần, không tier cố định) |
+| 02-brief-chien-dich | ⚠️ Done nhưng còn thiếu | Cần thêm section "Tạo offer chiến dịch" (giá, gói, mechanic ưu đãi) |
+| 03-danh-gia-hieu-suat | ✅ Done | session_context, mode quick/full, dynamic action plan |
+| 04-script-video | ✅ Done | v3.0.0 — session_context mode, coaching question (viết sẵn vs tự viết), hooks theo ngành, TOFU/MOFU/BOFU variants, negative examples, hashtag theo nền tảng |
+| 05-copy-quang-cao | ✅ Done | v3.0.0 — session_context mode, Zalo OA copy, negative examples PAS+AIDA, Personal Brand T1/T2/S1/S2 hoàn chỉnh, Telegram vs Full output |
+| 06-brief-ugc-egc | ⏳ Assessment xong, chưa viết | Cần thêm: YAML, adaptive intake, disclosure requirement, negative example brief, Telegram vs Full |
+| 08-nghien-cuu-doi-thu | ✅ Done | v3.0.0 — MCP flow, 3-tier competitor, 5 core aspects, industry supplements |
+| 09-insight-khach-hang | ✅ Done | v3.0.0 — adaptive intake, Customer Journey Spa demo, Internal Monologue demo, behavioral segmentation theory (action → skill 30) |
+| 30-retention-strategy | ✅ Done | v2.0.0 — 4-nhóm action table (merge từ skill 09), adaptive intake |
+| 31-winback-campaign | ✅ Done | v2.0.0 — YAML updated, adaptive intake |
+| **07, 10–29** | ⏳ Chưa làm | Phase tiếp theo |
 
-**Skill tiếp theo cần review: 04-script-video**
-Protocol: đọc file → tóm tắt skill làm gì + output → user confirm → review CMO đầy đủ → sửa khi confirm
+**Skill tiếp theo cần làm:**
+1. **06-brief-ugc-egc** — viết file (assessment đã xong, xem ghi chú trên)
+2. **02-brief-chien-dich** — thêm section "Tạo offer chiến dịch"
+3. Sau đó: #SECTION markers + ingest Supabase cho toàn bộ skills vừa sửa
+
+Protocol: đọc file → CMO review đầy đủ → user confirm → sửa
 
 ---
 
-## Supabase Schema — chưa build, đã thiết kế hướng đi
+## Arkon-style Skill Storage — ĐÃ BUILD & TEST ✅
 
-Nên build schema đúng ngay từ đầu để không migrate 2 lần:
+### Tổng quan
 
-```sql
--- Skills stored in DB (không đọc từ file mỗi lần)
-table: skills
-  id, name, description, version, context_requirements (jsonb),
-  description_embedding (vector)   -- cho semantic routing
+Thay vì đọc toàn bộ file SKILL.md mỗi lần gọi, skills được chia thành sections có metadata, lưu vào Supabase, và chỉ load sections liên quan theo mode + industry.
 
-table: skill_sections
-  skill_id, section_type, content, embedding (vector), priority
+**Token savings đã đo:** Quick mode load 8/12 sections = tiết kiệm **44.2%** tokens so với full file.
 
--- Customer memory (flat JSONB hiện tại — đủ dùng giai đoạn đầu)
-table: customer_memory
-  customer_id, memory (jsonb), updated_at
+### Cấu trúc #SECTION markers trong SKILL.md
 
--- Audit log
-table: ai_audit_log
-  customer_id, skill_id, agent_id, input_summary, output_summary,
-  skill_version, review_rounds, created_at
+```markdown
+<!-- #SECTION
+id: context_intake
+type: context_intake
+priority: 1
+modes: [all]
+industries: [all]
+tags: [onboarding, session_context]
+-->
 
--- Workflow state (cho crash-resume)
-table: workflow_state
-  session_id, workflow_type, completed_skills (jsonb),
-  current_skill, created_at
+... nội dung section ...
+
+<!-- #/SECTION -->
 ```
 
-Wiki-style memory (phase sau, sau khi có 50+ khách active):
-- Chia customer_memory thành pages với embedding riêng
-- Chỉ retrieve pages liên quan đến skill đang chạy
+**Priority logic:**
+- `priority: 1` — luôn load (context_intake, data_collection, quality_checklist)
+- `priority: 2` — load cho cả quick và full
+- `priority: 3` — chỉ load khi `mode=full` hoặc industry match
+
+### Files đã tạo
+
+| File | Mục đích |
+|------|---------|
+| `db/schema.sql` | Tạo bảng `skills` + `skill_sections` trong Supabase |
+| `scripts/ingest_skill.py` | Parse SKILL.md → upsert vào Supabase |
+| `scripts/test_retrieval.sql` | SQL tests: view sections, quick/full filter, token comparison |
+| `scripts/test_full_flow.py` | End-to-end test: Supabase → Claude Haiku → print output |
+| `scripts/telegram_bot.py` | Telegram bot multi-turn với session history |
+| `scripts/requirements.txt` | Python dependencies |
+
+### Chạy ingestion
+
+```bash
+# Ingest 1 skill
+python -X utf8 scripts/ingest_skill.py skills/vi/00-ke-hoach-mkt/SKILL.md
+
+# Ingest tất cả
+python -X utf8 scripts/ingest_skill.py --all
+
+# Lưu ý: phải dùng -X utf8 trên Windows (Python 3.14)
+```
+
+### Skills đã ingested vào Supabase
+
+| Skill | Sections | Quick sections | Full sections |
+|-------|---------|---------------|--------------|
+| 00-ke-hoach-mkt | 12 | 8 | 12 |
+| 01-lich-noi-dung | 11 | 8 | 11 |
+| 02-brief-chien-dich | 14 | 9 | 14 |
+| 03-danh-gia-hieu-suat | 14 | 10 | 14 |
+
+### Telegram Bot (Python local — để test)
+
+```bash
+python -X utf8 scripts/telegram_bot.py
+```
+
+Bot đã test thực tế trên Telegram:
+- Multi-turn conversation history per chat_id
+- Fetch sections từ Supabase real-time
+- Gọi Claude Haiku-4-5 với session_context + skill sections
+- `/start` reset session, `/reset` để bắt đầu lại
+
+**Lưu ý:** Python bot = prototype test. Production sẽ dùng n8n.
+
+**Vấn đề chưa fix:** Output "lỏ" — không bám sát template → nguyên nhân là Haiku (model yếu hơn). Fix: chuyển sang `claude-sonnet-4-5` (deferred).
+
+### Supabase Schema (đã triển khai)
+
+```sql
+-- Xem db/schema.sql để full schema
+table: skills
+  skill_id (PK), name, description, agent, version, category,
+  context_requirements (jsonb)
+
+table: skill_sections
+  skill_id (FK), section_id, section_type, content,
+  priority, modes TEXT[], industries TEXT[], tags TEXT[]
+  -- GIN indexes on modes, industries arrays
+```
 
 ---
 
@@ -179,4 +252,21 @@ File ZIP: `C:\Users\dtnhien\Downloads\arkon-main.zip`
 
 Paste vào đầu session:
 
-> "Tiếp tục project CMO AI — đọc HANDOFF.md tại root. Tiếp tục review skill 04-script-video theo protocol: đọc file → tóm tắt → user confirm → review CMO → sửa."
+> "Tiếp tục project CMO AI — đọc HANDOFF.md tại root. Việc tiếp theo: viết file skill 06-brief-ugc-egc (assessment đã xong, xem trạng thái skill trong HANDOFF), sau đó thêm section Tạo offer chiến dịch vào skill 02."
+
+---
+
+## Pending tasks
+
+| Task | Trạng thái | Ghi chú |
+|------|-----------|---------|
+| Skills 00-03: add #SECTION markers | ✅ Done | 4 skills đã ingested vào Supabase |
+| Telegram bot local test | ✅ Done | Multi-turn, real Supabase, real Claude |
+| Skill 06: viết file | ⏳ Việc tiếp theo | Assessment xong — xem ghi chú trong bảng trạng thái skill |
+| Skill 02: thêm "Tạo offer chiến dịch" | ⏳ Việc tiếp theo | Sau skill 06 |
+| Skills 04–05, 08–09, 30–31: add #SECTION markers + ingest | ⏳ Chưa làm | Sau khi content review xong toàn bộ |
+| Skills 07, 10–29: content review | ⏳ Phase tiếp theo | Sau khi xong pre-launch set |
+| n8n setup production | ⏳ Deferred | Sau khi đủ skills ingested |
+| Fix output template (Haiku → Sonnet) | ⏳ Deferred | Đổi model trong telegram_bot.py |
+| .env.example: thêm ANTHROPIC_API_KEY + TELEGRAM_BOT_TOKEN | ⏳ Todo | |
+| .env.example: bổ sung ANTHROPIC_API_KEY + TELEGRAM_BOT_TOKEN | ⏳ Todo | File hiện chỉ có SUPABASE_* keys |

@@ -197,11 +197,10 @@ Tat ca 5 agents la **universal** (v2.5.0+) — phuc vu CA hai cluster VN va Glob
 
 | Agent | Vai tro | Skills chinh (VN / Global) |
 |-------|---------|-------------|
-| mkt-strategist | Chien luoc tong | 00, 02, 08, 09, 10 |
+| mkt-strategist | Chien luoc tong | 00, 02, 08, 09, 30, 31 |
 | content-producer | San xuat noi dung | 01, 04, 05, 06 |
 | performance-analyst | Phan tich hieu suat | 03, 07, 10, 13 |
 | channel-operator | Van hanh kenh | 11, 12, 14, 15 |
-| retention-specialist | Giu chan + win-back khach hang | 30, 31 |
 | personal-brand-builder | Thuong hieu ca nhan + AI Avatar | 22, 23, 24, 25, 26, 27, 28 |
 
 ## Benchmark nhanh — Vietnam 2025–2026

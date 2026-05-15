@@ -1,234 +1,217 @@
 ---
 name: 30-retention-strategy
-description: Xây dựng hệ thống giữ chân khách hàng theo ngành và giai đoạn kinh doanh — gợi ý cách làm cụ thể, không cần data CRM
+description: Xay dung he thong giu chan khach hang theo nganh va giai doan kinh doanh — phan tang 4 nhom, chu ky lien he, loyalty tier, upsell, kenh va KPI cu the.
+skill_id: "30-retention-strategy"
+agent: "mkt-strategist"
 metadata:
-  version: 1.0.0
+  version: 2.0.0
   category: strategy
 triggers:
-  - "giữ chân khách"
-  - "khách không quay lại"
+  - "giu chan khach"
+  - "khach khong quay lai"
   - "retention"
-  - "khách hàng trung thành"
+  - "khach hang trung thanh"
   - "loyalty"
-  - "tăng tỉ lệ quay lại"
-  - "khách cũ"
-  - "chăm sóc khách hàng"
-  - "hệ thống khách hàng thân thiết"
-output: File .md gồm framework retention theo ngành, gợi ý theo giai đoạn + đối tượng, kênh triển khai, KPI cần đo
+  - "tang ti le quay lai"
+  - "khach cu"
+  - "cham soc khach hang"
+  - "he thong khach hang than thiet"
+output: File .md / Google Sheet gom framework retention theo nganh, phan tang 4 nhom, chu ky lien he, kenh trien khai, KPI can do
+context_requirements:
+  required: []
+  optional:
+    - industry
+    - business_stage
+    - active_channels
+    - business_name
 related:
   - 31-winback-campaign
   - 09-insight-khach-hang
   - 14-email-marketing
 ---
 
-# Hệ Thống Retention — Giữ Chân Khách Hàng
+# He Thong Retention — Giu Chan Khach Hang
 
-> Với spa/clinic: 60–70% doanh thu đến từ khách quay lại. Retention không phải "chăm sóc" — đây là hệ thống doanh thu có thể dự báo được.
-
----
-
-## Thu thập thông tin
-
-Hỏi tối đa 2 câu:
-
-1. **Ngành hàng?** (Spa / Clinic thẩm mỹ / F&B / Gym-Yoga / Giáo dục / Ecommerce / SaaS / Khác)
-2. **Đang ở giai đoạn nào + vấn đề cụ thể?**
-   - Mới mở (0–6 tháng) — chưa có hệ thống gì
-   - Đang tăng trưởng (6–24 tháng) — có khách nhưng ít quay lại
-   - Ổn định (2 năm+) — muốn tối ưu LTV và loyalty
+> Voi spa/clinic: 60–70% doanh thu den tu khach quay lai. Retention khong phai "cham soc" — day la he thong doanh thu co the du bao duoc.
 
 ---
 
-## Tại sao khách không quay lại — 5 lý do phổ biến
+## Thu thap thong tin
 
-| Lý do | Dấu hiệu | Ngành hay gặp |
+Neu session_context da co industry va business_stage → bo qua, lay tu context.
+
+Neu chua co, hoi 2 cau:
+
+1. **Nganh hang?** (Spa / Clinic tham my / F&B / Gym-Yoga / Giao duc / Ecommerce / SaaS / Khac)
+2. **Dang o giai doan nao + van de cu the?**
+   - Moi mo (0–6 thang) — chua co he thong gi
+   - Dang tang truong (6–24 thang) — co khach nhung it quay lai
+   - On dinh (2 nam+) — muon toi uu LTV va loyalty
+
+---
+
+## Tai sao Khach Khong Quay Lai — 5 Ly Do Pho Bien
+
+| Ly do | Dau hieu | Nganh hay gap |
 |-------|---------|--------------|
-| Không ai nhắc — họ quên mất | Không có follow-up sau lần đầu | Spa, clinic, F&B |
-| Không có lý do đủ mạnh để quay lại | Dịch vụ tốt nhưng không có ưu đãi/điều mới | Spa, gym, giáo dục |
-| Trải nghiệm lần trước chưa đủ ấn tượng | Không có review, không có follow-up hỏi thăm | Tất cả ngành |
-| Đối thủ offer hấp dẫn hơn | Khách bị kéo đi bởi deal mới | Ecommerce, F&B |
-| Nhu cầu đã được đáp ứng (churn tự nhiên) | Khóa học xong, dự án xong | Giáo dục, SaaS |
+| Khong ai nhac — ho quen mat | Khong co follow-up sau lan dau | Spa, clinic, F&B |
+| Khong co ly do du manh de quay lai | Dich vu tot nhung khong co uu dai/dieu moi | Spa, gym, giao duc |
+| Trai nghiem lan truoc chua du an tuong | Khong co review, khong co follow-up hoi tham | Tat ca nganh |
+| Doi thu offer hap dan hon | Khach bi keo di boi deal moi | Ecommerce, F&B |
+| Nhu cau da duoc dap ung (churn tu nhien) | Khoa hoc xong, du an xong | Giao duc, SaaS |
 
 ---
 
-## Framework Retention theo Giai đoạn
+## Framework Retention theo Giai Doan Kinh Doanh
 
-### Giai đoạn 1 — Mới mở (0–6 tháng)
+### Giai doan 1 — Moi mo (0–6 thang)
 
-**Ưu tiên:** Tạo thói quen quay lại ngay từ lần đầu. Chưa cần hệ thống phức tạp.
+**Uu tien:** Tao thoi quen quay lai ngay tu lan dau. Chua can he thong phuc tap.
 
-| Hành động | Cách làm | Kênh |
+| Hanh dong | Cach lam | Kenh |
 |-----------|---------|------|
-| Follow-up 24–48h sau lần đầu | Hỏi thăm kết quả, cảm nhận | Zalo cá nhân, Messenger |
-| Offer lần 2 ngay tại điểm bán | "Đặt lịch hôm nay được giảm X%" | Offline + Zalo |
-| Thu SĐT / Zalo 100% khách | Bắt buộc — đây là tài sản số | Form điện tử, sổ tay |
-| Gửi tips/giá trị sau dịch vụ | Skincare routine sau trị liệu, bài tập về nhà | Zalo OA, Messenger |
+| Follow-up 24–48h sau lan dau | Hoi tham ket qua, cam nhan | Zalo ca nhan, Messenger |
+| Offer lan 2 ngay tai diem ban | "Dat lich hom nay duoc giam X%" | Offline + Zalo |
+| Thu SDT / Zalo 100% khach | Bat buoc — day la tai san so | Form dien tu, so tay |
+| Gui tips/gia tri sau dich vu | Skincare routine sau tri lieu, bai tap ve nha | Zalo OA, Messenger |
 
-**Mục tiêu giai đoạn:** 30% khách quay lại trong 60 ngày.
+**Muc tieu giai doan:** 30% khach quay lai trong 60 ngay.
 
 ---
 
-### Giai đoạn 2 — Tăng trưởng (6–24 tháng)
+### Giai doan 2 — Tang truong (6–24 thang)
 
-**Ưu tiên:** Phân tầng khách, tạo chu kỳ liên hệ, bắt đầu loyalty đơn giản.
+**Uu tien:** Phan tang khach, tao chu ky lien he, bat dau loyalty don gian.
 
-#### Phân tầng 4 nhóm khách
+#### Phan tang 4 nhom khach
 
-| Nhóm | Định nghĩa | % Khách TB | Hành động ưu tiên |
-|------|-----------|-----------|-------------------|
-| **Mới** | Mua lần đầu, chưa quay lại | 40–50% | Onboarding tốt, follow-up nhanh |
-| **Đang active** | Mua 2+ lần trong 90 ngày | 20–30% | Nuture, upsell nhẹ, tạo thói quen |
-| **Có nguy cơ** | Quá 60 ngày không quay lại | 15–20% | Nhắc nhở + ưu đãi nhẹ |
-| **Đã bỏ** | Quá 90 ngày không có tương tác | 10–20% | Win-back campaign → xem Skill 31 |
+| Nhom | Dinh nghia | % Khach TB | Content phu hop | Kenh | Uu dai | Hanh dong uu tien |
+|------|-----------|-----------|----------------|------|--------|-------------------|
+| **Moi** | Mua lan dau, chua quay lai | 40–50% | TOFU: giao duc, social proof, ket qua thuc te | TikTok, Facebook, Zalo ca nhan | Trial, lan 2 giam nhe | Onboarding tot, follow-up nhanh trong 48h |
+| **Dang active** | Mua 2+ lan trong 90 ngay | 20–30% | MOFU: gia tri them, dich vu moi, ket qua | Zalo OA, Email, Messenger | Loyalty tier, upsell nhe | Nurture, cham soc deu dang, khong de churn |
+| **Co nguy co** | Qua 60 ngay khong quay lai | 15–20% | Nhac nho, uu dai co thoi han, case study | Zalo OA, Email, SMS | Uu dai nhe kem han dung | Nhan tin ca nhan — hoi ly do, gui offer |
+| **Da bo** | Qua 90 ngay khong tuong tac | 10–20% | Win-back: hoi ly do, offer dac biet | Email, Zalo, SMS | Comeback offer manh hon | Chuyen sang Skill 31 — win-back campaign |
 
-#### Chu kỳ liên hệ gợi ý theo ngành
+#### Chu ky lien he goi y theo nganh
 
-| Ngành | Chu kỳ tự nhiên | Liên hệ lần 1 | Liên hệ lần 2 | Liên hệ lần 3 |
+| Nganh | Chu ky tu nhien | Lien he lan 1 | Lien he lan 2 | Lien he lan 3 |
 |-------|---------------|--------------|--------------|--------------|
-| Spa (skincare) | 4–6 tuần | Ngày 3 sau dịch vụ | Ngày 25 (nhắc lịch) | Ngày 35 (ưu đãi) |
-| Clinic thẩm mỹ | 3–6 tháng | Ngày 7 (kiểm tra kết quả) | Tháng 2 (nhắc tái khám) | Tháng 5 (offer liệu trình mới) |
-| Gym / Yoga | Hàng tuần | Ngày 3 (hỏi thăm) | Tuần 3 (check-in) | Hết tháng (gia hạn) |
-| F&B | 1–2 tuần | Ngay sau ăn (cảm ơn) | Tuần 2 (offer) | Tháng 1 (loyalty) |
-| Giáo dục | Theo khóa | Tuần 1 (onboarding) | Giữa khóa (engagement) | Cuối khóa (upsell khóa tiếp) |
-| Ecommerce | 30–45 ngày | Ngày 3 (unboxing check) | Ngày 20 (review) | Ngày 40 (offer lần 2) |
+| Spa (skincare) | 4–6 tuan | Ngay 3 sau dich vu | Ngay 25 (nhac lich) | Ngay 35 (uu dai) |
+| Clinic tham my | 3–6 thang | Ngay 7 (kiem tra ket qua) | Thang 2 (nhac tai kham) | Thang 5 (offer lieu trinh moi) |
+| Gym / Yoga | Hang tuan | Ngay 3 (hoi tham) | Tuan 3 (check-in) | Het thang (gia han) |
+| F&B | 1–2 tuan | Ngay sau an (cam on) | Tuan 2 (offer) | Thang 1 (loyalty) |
+| Giao duc | Theo khoa | Tuan 1 (onboarding) | Giua khoa (engagement) | Cuoi khoa (upsell khoa tiep) |
+| Ecommerce | 30–45 ngay | Ngay 3 (unboxing check) | Ngay 20 (review) | Ngay 40 (offer lan 2) |
 
 ---
 
-### Giai đoạn 3 — Ổn định (2 năm+)
+### Giai doan 3 — On dinh (2 nam+)
 
-**Ưu tiên:** Hệ thống loyalty bài bản, tối ưu LTV, biến khách thành advocate.
+**Uu tien:** He thong loyalty bai ban, toi uu LTV, bien khach thanh advocate.
 
-#### Mô hình Loyalty Tier gợi ý
+#### Mo hinh Loyalty Tier goi y
 
-| Tier | Điều kiện | Quyền lợi | Mục tiêu |
+| Tier | Dieu kien | Quyen loi | Muc tieu |
 |------|-----------|-----------|---------|
-| **Member** | Đã mua 1 lần | Tích điểm cơ bản, sinh nhật | Khuyến khích lần 2 |
-| **Silver** | 3–5 lần / 6 tháng | Ưu đãi 5–10%, ưu tiên đặt lịch | Tạo thói quen |
-| **Gold** | 6–10 lần / 6 tháng | Ưu đãi 10–15%, quà tặng, preview dịch vụ mới | Giữ khách trung thành |
-| **VIP** | Top 10% khách | Ưu đãi 15–20%, dịch vụ exclusive, sự kiện riêng | Biến thành advocate |
+| **Member** | Da mua 1 lan | Tich diem co ban, sinh nhat | Khuyen khich lan 2 |
+| **Silver** | 3–5 lan / 6 thang | Uu dai 5–10%, uu tien dat lich | Tao thoi quen |
+| **Gold** | 6–10 lan / 6 thang | Uu dai 10–15%, qua tang, preview dich vu moi | Giu khach trung thanh |
+| **VIP** | Top 10% khach | Uu dai 15–20%, dich vu exclusive, su kien rieng | Bien thanh advocate |
 
-#### Upsell / Cross-sell đúng thời điểm
+#### Upsell / Cross-sell dung thoi diem
 
-| Thời điểm | Gợi ý | Cách nói |
+| Thoi diem | Goi y | Cach noi |
 |-----------|-------|---------|
-| Đang dùng dịch vụ | Cross-sell dịch vụ bổ sung | "Chị đang làm da, kết hợp massage mặt sẽ giữ kết quả lâu hơn" |
-| Vừa xong dịch vụ | Upsell gói dài hạn | "Nếu làm theo liệu trình 4 buổi tiết kiệm được 20%" |
-| Nhắc lịch tái khám | Cross-sell sản phẩm chăm sóc tại nhà | "Để duy trì kết quả, chị có thể dùng thêm sản phẩm này" |
-| Sinh nhật | Offer đặc biệt | "Quà sinh nhật của chị: ưu đãi 20% buổi tiếp theo" |
+| Dang dung dich vu | Cross-sell dich vu bo sung | "Chi dang lam da, ket hop massage mat se giu ket qua lau hon" |
+| Vua xong dich vu | Upsell goi dai han | "Neu lam theo lieu trinh 4 buoi tiet kiem duoc 20%" |
+| Nhac lich tai kham | Cross-sell san pham cham soc tai nha | "De duy tri ket qua, chi co the dung them san pham nay" |
+| Sinh nhat | Offer dac biet | "Qua sinh nhat cua chi: uu dai 20% buoi tiep theo" |
 
----
+#### Khach VIP — Bien thanh Advocate
 
-## Retention theo Đối tượng Khách
-
-### Khách lần đầu — "First-time to Repeat"
-
-**Mục tiêu:** Biến 30–40% khách lần đầu thành khách lần 2 trong 60 ngày.
-
-| Bước | Hành động | Thời điểm | Kênh |
-|------|-----------|----------|------|
-| 1 | Cảm ơn + hỏi cảm nhận | 24h sau | Zalo cá nhân |
-| 2 | Gửi tips chăm sóc tại nhà | 48–72h sau | Zalo OA / Messenger |
-| 3 | Nhắc lịch tái dịch vụ | Ngày 20–25 | Zalo OA |
-| 4 | Offer lần 2 nếu chưa đặt | Ngày 30 | Zalo + Messenger |
-
-### Khách đang Active — "Nurture & Upsell"
-
-**Mục tiêu:** Tăng AOV và tần suất, không để họ bị đối thủ kéo đi.
-
-| Hành động | Tần suất | Nội dung |
-|-----------|---------|---------|
-| Tips/giá trị | 2 lần/tháng | Kiến thức liên quan đến dịch vụ đang dùng |
-| Thông báo dịch vụ mới | Khi có | "Chị đang làm X, em vừa có dịch vụ Y bổ sung rất tốt" |
-| Ưu đãi exclusive | 1 lần/tháng | Chỉ dành cho khách đang active |
-| Check-in kết quả | Theo chu kỳ | "Sau 4 buổi, da chị thay đổi thế nào rồi?" |
-
-### Khách VIP — "Advocacy & Referral"
-
-**Mục tiêu:** Biến họ thành kênh marketing miễn phí.
-
-| Hành động | Cách làm |
+| Hanh dong | Cach lam |
 |-----------|---------|
-| Ghi nhận công khai | Tag/mention khi họ cho phép, highlight story của họ |
-| Mời trải nghiệm trước | Preview dịch vụ mới trước khi ra mắt |
-| Chương trình referral | "Giới thiệu bạn được X% — bạn được Y%" → Skill 18 |
-| Sự kiện VIP | Buổi trị liệu miễn phí, event riêng cho nhóm VIP |
-| Feedback loop | Hỏi ý kiến về dịch vụ mới — họ cảm thấy được trân trọng |
+| Ghi nhan cong khai | Tag/mention khi ho cho phep, highlight story cua ho |
+| Moi trai nghiem truoc | Preview dich vu moi truoc khi ra mat |
+| Chuong trinh referral | "Gioi thieu ban duoc X% — ban duoc Y%" → Skill 18 |
+| Su kien VIP | Buoi tri lieu mien phi, event rieng cho nhom VIP |
+| Feedback loop | Hoi y kien ve dich vu moi — ho cam thay duoc tran trong |
 
 ---
 
-## Kênh Retention theo Ngành
+## Kenh Retention theo Nganh
 
-| Kênh | Phù hợp nhất | Nội dung gợi ý | Chi phí |
+| Kenh | Phu hop nhat | Noi dung goi y | Chi phi |
 |------|-------------|---------------|---------|
-| **Zalo OA** | Spa, clinic, F&B, gym | Nhắc lịch, tips, ưu đãi, broadcast | Thấp (~500đ/tin) |
-| **Zalo cá nhân** | Dịch vụ high-touch, spa, clinic | Follow-up cá nhân, hỏi thăm | Miễn phí |
-| **Email** | Ecommerce, SaaS, giáo dục | Newsletter, lifecycle sequence | Thấp (Brevo free 300/ngày) |
-| **SMS** | F&B, retail | Nhắc lịch, flash deal | Trung bình (~700đ/tin) |
-| **Facebook Group** | Gym, giáo dục, beauty | Community, tips, Q&A | Miễn phí |
-| **Messenger** | F&B, ecommerce, spa | Broadcast, chatbot, ưu đãi | Thấp |
+| **Zalo OA** | Spa, clinic, F&B, gym | Nhac lich, tips, uu dai, broadcast | Thap (~500d/tin) |
+| **Zalo ca nhan** | Dich vu high-touch, spa, clinic | Follow-up ca nhan, hoi tham | Mien phi |
+| **Email** | Ecommerce, SaaS, giao duc | Newsletter, lifecycle sequence | Thap (Brevo free 300/ngay) |
+| **SMS** | F&B, retail | Nhac lich, flash deal | Trung binh (~700d/tin) |
+| **Facebook Group** | Gym, giao duc, beauty | Community, tips, Q&A | Mien phi |
+| **Messenger** | F&B, ecommerce, spa | Broadcast, chatbot, uu dai | Thap |
 
 ---
 
-## KPI Retention cần đo
+## KPI Retention can Do
 
-| KPI | Công thức | Benchmark VN 2025 | Tốt |
+| KPI | Cong thuc | Benchmark VN 2025 | Tot |
 |-----|----------|-------------------|-----|
-| **Repeat Purchase Rate** | Khách mua 2+ lần / Tổng khách | Beauty: >35% | >50% |
-| **Churn Rate** | Khách bỏ trong 90 ngày / Tổng khách | Beauty: <30% | <20% |
-| **LTV (12 tháng)** | AOV × Số lần mua TB / năm | Beauty: 3–5x AOV | >5x AOV |
-| **Time to 2nd Purchase** | Ngày trung bình từ lần 1 đến lần 2 | Beauty: 45–60 ngày | <30 ngày |
-| **Zalo OA Read Rate** | Tin đọc / Tin gửi | Trung bình: 40–60% | >60% |
+| **Repeat Purchase Rate** | Khach mua 2+ lan / Tong khach | Beauty: >35% | >50% |
+| **Churn Rate** | Khach bo trong 90 ngay / Tong khach | Beauty: <30% | <20% |
+| **LTV (12 thang)** | AOV × So lan mua TB / nam | Beauty: 3–5x AOV | >5x AOV |
+| **Time to 2nd Purchase** | Ngay trung binh tu lan 1 den lan 2 | Beauty: 45–60 ngay | <30 ngay |
+| **Zalo OA Read Rate** | Tin doc / Tin gui | Trung binh: 40–60% | >60% |
 
 ---
 
-## Retention theo Ngành — Gợi ý nhanh
+## Retention theo Nganh — Goi y Nhanh
 
 ### Spa / Beauty Salon
-- Chu kỳ tự nhiên: 3–6 tuần
-- Retention lever mạnh nhất: Nhắc lịch đúng thời điểm + kết quả trước/sau
-- Kênh tốt nhất: Zalo OA + Zalo cá nhân
-- Offer giữ chân: Gói liệu trình (ít nhất 4 buổi), tặng 1 buổi nếu đặt 5
+- Chu ky tu nhien: 3–6 tuan
+- Retention lever manh nhat: Nhac lich dung thoi diem + ket qua truoc/sau
+- Kenh tot nhat: Zalo OA + Zalo ca nhan
+- Offer giu chan: Goi lieu trinh (it nhat 4 buoi), tang 1 buoi neu dat 5
 
-### Clinic Thẩm mỹ
-- Chu kỳ tự nhiên: 1–6 tháng tùy dịch vụ
-- Retention lever: Theo dõi kết quả (before/after), nhắc tái khám
-- Kênh: Zalo cá nhân, tư vấn viên phụ trách riêng từng khách
-- Offer: Gói bảo hành kết quả, liệu trình combo
+### Clinic Tham my
+- Chu ky tu nhien: 1–6 thang tuy dich vu
+- Retention lever: Theo doi ket qua (before/after), nhac tai kham
+- Kenh: Zalo ca nhan, tu van vien phu trach rieng tung khach
+- Offer: Goi bao hanh ket qua, lieu trinh combo
 
 ### F&B
-- Chu kỳ tự nhiên: 1–2 tuần
-- Retention lever: Loyalty card (stamp/điểm), món mới, sinh nhật
-- Kênh: Zalo OA, Messenger, app (nếu có)
-- Offer: Mua 9 tặng 1, ưu đãi ngày thường
+- Chu ky tu nhien: 1–2 tuan
+- Retention lever: Loyalty card (stamp/diem), mon moi, sinh nhat
+- Kenh: Zalo OA, Messenger, app (neu co)
+- Offer: Mua 9 tang 1, uu dai ngay thuong
 
 ### Gym / Yoga / Studio
-- Chu kỳ: Theo tháng / khóa
-- Retention lever: Kết quả tập luyện, community, challenge
-- Kênh: Facebook Group, Zalo Group, Messenger
-- Offer: Gia hạn sớm được giảm, data goal tracking
+- Chu ky: Theo thang / khoa
+- Retention lever: Ket qua tap luyen, community, challenge
+- Kenh: Facebook Group, Zalo Group, Messenger
+- Offer: Gia han som duoc giam, goal tracking
 
-### Giáo dục
-- Chu kỳ: Theo khóa học (1–6 tháng)
-- Retention lever: Kết quả học viên, khóa tiếp theo liên quan
-- Kênh: Email, Zalo OA, Facebook Group alumni
-- Offer: Alumni discount, bundle khóa tiếp theo
+### Giao duc
+- Chu ky: Theo khoa hoc (1–6 thang)
+- Retention lever: Ket qua hoc vien, khoa tiep theo lien quan
+- Kenh: Email, Zalo OA, Facebook Group alumni
+- Offer: Alumni discount, bundle khoa tiep theo
 
 ### Ecommerce
-- Chu kỳ: 30–60 ngày
+- Chu ky: 30–60 ngay
 - Retention lever: Review request, reorder reminder, personalized offer
-- Kênh: Email, Messenger, SMS
-- Offer: Discount lần 2, loyalty points, free shipping threshold
+- Kenh: Email, Messenger, SMS
+- Offer: Discount lan 2, loyalty points, free shipping threshold
 
 ---
 
-## Checklist chất lượng
+## Checklist Chat Luong
 
-- [ ] Đã xác định ngành và giai đoạn kinh doanh
-- [ ] Phân tầng 4 nhóm khách rõ ràng (Mới / Active / Có nguy cơ / Đã bỏ)
-- [ ] Chu kỳ liên hệ phù hợp với chu kỳ tự nhiên của ngành
-- [ ] Kênh retention phù hợp với đối tượng khách (không áp Zalo OA cho SaaS)
-- [ ] Có ít nhất 1 trigger cụ thể cho từng nhóm khách
-- [ ] Offer retention không phá vỡ margin (không giảm giá liên tục)
-- [ ] KPI đã xác định và biết cách đo
-- [ ] Kết nối với Skill 31 cho nhóm "Đã bỏ"
-- [ ] Kết nối với Skill 18 cho nhóm VIP → referral
+- [ ] Da xac dinh nganh va giai doan kinh doanh
+- [ ] Phan tang du 4 nhom khach (Moi / Active / Co nguy co / Da bo) voi hanh dong cu the cho tung nhom
+- [ ] Chu ky lien he phu hop voi chu ky tu nhien cua nganh
+- [ ] Kenh retention phu hop voi doi tuong khach (khong ap Zalo OA cho SaaS)
+- [ ] Co it nhat 1 trigger cu the cho tung nhom khach
+- [ ] Offer retention khong pha vo margin (khong giam gia lien tuc)
+- [ ] KPI da xac dinh va biet cach do
+- [ ] Ket noi voi Skill 31 cho nhom "Da bo"
+- [ ] Ket noi voi Skill 18 cho nhom VIP → referral

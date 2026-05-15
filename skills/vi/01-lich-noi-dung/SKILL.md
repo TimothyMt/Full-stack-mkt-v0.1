@@ -1,8 +1,10 @@
 ---
-name: 01-lich-noi-dung
+skill_id: "01-lich-noi-dung"
+name: "Lich Noi Dung"
 description: Lich noi dung thang — len lich dang bai da kenh voi ti le pheu, content pillar, repurposing matrix, va scoring tieu chi.
+agent: "content-producer"
 metadata:
-  version: 2.1.0
+  version: 2.2.0
   category: content
 triggers:
   - "lich noi dung"
@@ -32,6 +34,15 @@ context_requirements:
 
 ---
 
+<!-- #SECTION
+id: context_intake
+type: context_intake
+priority: 1
+modes: [all]
+industries: [all]
+tags: [session_context, mode, quick, full]
+-->
+
 ## Thu thap thong tin
 
 ### Buoc 0 — Nhan tu session_context
@@ -45,26 +56,62 @@ context_requirements:
 
 ### Buoc 1 — Xac dinh mode output
 
+> Skip neu `mode` da co trong session_context.
+
 Hoi user:
 > "Ban muon lich noi dung o dang nao?"
 > - **Quick** — lich tuan toi + 5 y tuong content chinh, doc tren Telegram
 > - **Full** — lich ca thang + Content Matrix + Scoring → xuat Sheet hoac Excel
 
-### Buoc 2 — Hoi nhung gi chua co trong memory (toi da 3 cau)
+<!-- #/SECTION -->
 
-1. **Kenh dang co?** (neu chua co trong memory) — TikTok / FB / IG / Zalo / Email / Blog, so follower hien tai
+---
+
+<!-- #SECTION
+id: data_collection
+type: data_collection
+priority: 1
+modes: [all]
+industries: [all]
+tags: [questions, channels, objectives, team_size, resources]
+-->
+
+### Buoc 2 — Hoi nhung gi chua co trong session_context (toi da 3 cau)
+
+1. **Kenh dang co?** (neu chua co trong session_context) — TikTok / FB / IG / Zalo / Email / Blog, so follower hien tai
 2. **Muc tieu thang nay?** — Tang follower / tang mess / tang don / ra mat san pham / chien dich dac biet?
 3. **Nguon luc content?** — May nguoi lam content? Co quay video duoc khong? Co UGC/testimonial san khong?
 
-### Buoc 3 — Xac dinh quy mo lich theo nguon luc
+### Buoc 3 — Xac dinh nguon luc thuc te
 
-| Nguon luc | So kenh uu tien | So bai/tuan | Ghi chu |
-|-----------|----------------|------------|---------|
-| 1 nguoi | 2 kenh | 5–7 bai | Chon TikTok + 1 kenh manh nhat |
-| 2–3 nguoi | 3–4 kenh | 8–12 bai | Them FB/Zalo khi co nguoi thu 2 |
-| 4+ nguoi hoac agency | 5+ kenh | 15+ bai | Full multi-channel |
+> Skip neu `team_size` va `team_roles` da co trong session_context.
+
+Hoi 1 cau:
+> "Team content cua ban co bao nhieu nguoi, va vai tro cua tung nguoi la gi?"
+> Vi du: "2 nguoi — 1 quay/dung video, 1 viet bai + chay ads"
+
+**Logic tinh tu dong sau khi co so nguoi:**
+
+| Bien | Cong thuc | Vi du (3 nguoi) |
+|------|-----------|----------------|
+| So kenh uu tien | `min(so_nguoi + 1, 5)` | 4 kenh |
+| So bai / tuan | `so_nguoi × 3` den `so_nguoi × 4` | 9–12 bai |
+| Nguoi thuc hien | Dien ten that vao cot "Nguoi TH" | Anh A, Chi B, Em C |
+
+> Khong ap dung tier co dinh. Moi team co cau hinh khac nhau — dieu chinh theo vai tro thuc te.
+
+<!-- #/SECTION -->
 
 ---
+
+<!-- #SECTION
+id: logic_funnel_principles
+type: logic
+priority: 2
+modes: [all]
+industries: [all]
+tags: [funnel, content_pillar, source_type_mix, distribution]
+-->
 
 ## Nguyen tac xay lich noi dung
 
@@ -95,7 +142,7 @@ Moi thuong hieu can 3–5 pillar. Kiem tra balance moi tuan.
 
 ### 3. Source Type Mix
 
-> Ti le duoi day doc tu `customer_memory.source_type_mix` (da xac dinh o Skill 00).
+> Ti le duoi day doc tu `session_context.source_type_mix` (da xac dinh o Skill 00).
 > Neu chua co → dung bang mac dinh, KHONG tu quyet dinh lai.
 
 | Loai noi dung | Mac dinh (chua co Skill 00) | Mo ta |
@@ -105,7 +152,18 @@ Moi thuong hieu can 3–5 pillar. Kiem tra balance moi tuan.
 | UGC (User Generated) | 25% | Khach hang tu tao — social proof |
 | EGC (Employee Generated) | 15% | Nhan vien chia se — authentic |
 
+<!-- #/SECTION -->
+
 ---
+
+<!-- #SECTION
+id: reference_content_matrix
+type: reference
+priority: 2
+modes: [all]
+industries: [all]
+tags: [content_matrix, ideas, formats, justin_welsh]
+-->
 
 ## Content Matrix — Y tuong noi dung tu dong
 
@@ -126,15 +184,7 @@ Ghep **content pillar** cua brand voi **8 dinh dang** de tao 24–40 y tuong cun
 | 7 | **Hien tai vs Tuong lai** | Du bao, xu huong sap den | "Marketing 2025 vs 2026: 5 thay doi lon" |
 | 8 | **Danh sach** | Tips, sai lam, bai hoc, cong cu | "7 sai lam chay ads pho bien nhat cua SME Viet" |
 
-### Cach dung
-
-1. Doc `customer_memory.business.industry` → chon vi du phu hop nganh
-2. Lay 3–5 content pillar cua brand (tu memory hoac hoi user)
-3. Tao bang: pillar (hang) x 8 dinh dang (cot) = 24–40 y tuong
-4. Moi o ghi **tieu de cu the theo nganh** — khong ghi chung chung
-5. Chon so y tuong phu hop voi nguon luc (1 nguoi → 5, 2–3 nguoi → 10, 4+ nguoi → 15+)
-
-### Vi du theo nganh (doc tu memory, dung vi du dung nganh)
+### Vi du theo nganh (doc tu session_context.industry)
 
 | Nganh | Vi du Huong dan | Vi du Nguoc doi | Vi du Danh sach |
 |-------|----------------|----------------|----------------|
@@ -148,23 +198,147 @@ Ghep **content pillar** cua brand voi **8 dinh dang** de tao 24–40 y tuong cun
 
 ### Template content matrix
 
-```markdown
+```
 | Pillar \ Dinh dang | Huong dan | Truyen cam hung | Phan tich | Nguoc doi | Quan sat | X vs Y | Hien tai vs TL | Danh sach |
 |---------------------|----------|-----------------|-----------|-----------|---------|--------|----------------|-----------|
-| [Pillar 1] | [Y tuong theo nganh] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] |
+| [Pillar 1] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] |
 | [Pillar 2] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] |
 | [Pillar 3] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] | [Y tuong] |
 ```
 
-> **Tip:** Chay content matrix 1 lan/thang → co san 24+ y tuong. Chon so luong phu hop nguon luc, khong can dung het.
+> **Tip:** Chay content matrix 1 lan/thang → co san 24+ y tuong.
+
+<!-- #/SECTION -->
 
 ---
+
+<!-- #SECTION
+id: reference_scoring
+type: reference
+priority: 2
+modes: [all]
+industries: [all]
+tags: [scoring, quality, hook, cta, visual]
+-->
+
+## AI Content Scoring
+
+Cham diem moi content truoc khi dang (thang diem 10):
+
+| Tieu chi | Trong so | Diem (1–10) | Diem x Trong so |
+|----------|----------|-------------|-----------------|
+| **Hook** (3s dau co giu chan khong?) | 25% | [diem] | |
+| **Relevance** (dung insight khach hang?) | 20% | [diem] | |
+| **Value** (khach nhan duoc gi?) | 20% | [diem] | |
+| **CTA** (ro rang, de hanh dong?) | 15% | [diem] | |
+| **Visual** (chat luong hinh/video?) | 10% | [diem] | |
+| **Brand consistency** (dung tone, mau sac?) | 10% | [diem] | |
+| **Tong** | **100%** | | **[tong]/10** |
+
+**Nguong dang:**
+- 8–10: Dang ngay, co the boost paid
+- 6–7.9: Dang duoc, can chinh sua nhe
+- 4–5.9: Can viet lai hook hoac CTA
+- <4: Khong dang, lam lai
+
+<!-- #/SECTION -->
+
+---
+
+<!-- #SECTION
+id: reference_posting_time
+type: reference
+priority: 2
+modes: [all]
+industries: [all]
+tags: [posting_time, golden_hours, vietnam, seasonal]
+-->
+
+## Thoi gian dang toi uu — Vietnam
+
+### Gio vang theo kenh (UTC+7)
+
+| Kenh | Thu 2–6 | Thu 7 | Chu Nhat | Ghi chu |
+|------|---------|-------|----------|---------|
+| **TikTok** | 6:30–8:00, 11:30–13:00, 19:00–21:30 | 9:00–11:00, 19:00–22:00 | 10:00–12:00, 19:00–22:00 | Peak: 20:00–21:00 |
+| **Facebook** | 7:00–8:30, 11:00–13:00, 19:00–21:00 | 8:00–10:00, 19:00–21:00 | 9:00–11:00, 19:00–21:00 | Peak: 12:00, 20:00 |
+| **Instagram** | 7:00–9:00, 12:00–14:00, 18:00–20:00 | 9:00–11:00, 18:00–20:00 | 10:00–12:00 | Peak: 12:00–13:00 |
+| **Zalo OA** | 8:00–9:00, 17:00–18:30 | 9:00–10:00 | Khong gui | Gioi han 2–3 broadcast/tuan |
+| **Email** | 8:00–9:30, 14:00–15:00 | Khong gui | Khong gui | Thu 3 + Thu 5 tot nhat |
+| **YouTube** | 17:00–20:00 | 14:00–17:00 | 14:00–17:00 | Video dai — cuoi tuan tot hon |
+
+### Mua cao diem Vietnam
+
+| Thoi diem | Ghi chu | Dieu chinh |
+|-----------|---------|------------|
+| Tet Nguyen Dan (T1–T2) | CPM tang 30–50%, engagement tang | Tang content tru Tet, len lich truoc 2 tuan |
+| 8/3 + 20/10 | Nganh Beauty, F&B tang manh | Chay chien dich truoc 1 tuan |
+| Black Friday (T11) | E-commerce, courses | CPM tang 20–30% |
+| Back to school (T8–T9) | Education, edtech | Content giao duc tang |
+| He (T6–T8) | F&B, du lich, giai tri | Tang content giai tri, lifestyle |
+
+<!-- #/SECTION -->
+
+---
+
+<!-- #SECTION
+id: template_schedule
+type: template
+priority: 2
+modes: [all]
+industries: [all]
+tags: [schedule, weekly, calendar, balance_check]
+-->
+
+## Template lich noi dung tuan
+
+> Template duoi day la 1 khung duy nhat — so hang, so kenh, va cot "Nguoi TH" tu dong dieu chinh theo so nguoi va vai tro user da cung cap o Buoc 3.
+
+### Tuan [so] — [ngay bat dau] den [ngay ket thuc]
+
+| Ngay | Thu | Kenh | Gio dang | Dinh dang | Tang pheu | Pillar | Chu de | Hook / Headline | CTA | Source type | Nguoi TH | Trang thai |
+|------|-----|------|----------|-----------|-----------|--------|--------|-----------------|-----|-------------|----------|------------|
+| [ngay] | T2 | [kenh] | [gio] | [dinh dang] | TOFU | Giao duc | [chu de] | [hook 3s] | [CTA] | [loai] | [ten] | Draft |
+| [ngay] | T2 | [kenh] | [gio] | [dinh dang] | MOFU | Cam hung | [chu de] | [headline] | [CTA] | [loai] | [ten] | |
+| [ngay] | T3 | [kenh] | [gio] | [dinh dang] | TOFU | Giai tri | [chu de] | [hook] | [CTA] | [loai] | [ten] | |
+| [ngay] | T4 | [kenh] | [gio] | [dinh dang] | MOFU | Giao duc | [chu de] | [hook] | [CTA] | [loai] | [ten] | |
+| [ngay] | T5 | [kenh] | [gio] | [dinh dang] | BOFU | Ban hang | [chu de] | [headline] | [CTA] | [loai] | [ten] | |
+| [ngay] | T6 | [kenh] | [gio] | [dinh dang] | TOFU | Giai tri | [chu de] | [hook] | [CTA] | [loai] | [ten] | |
+| [ngay] | T7 | [kenh] | [gio] | [dinh dang] | MOFU | Cam hung | [chu de] | [hook] | [CTA] | [loai] | [ten] | |
+| [ngay] | CN | Zalo OA | 09:00 | Broadcast | Retention | Cong dong | [chu de] | [tieu de] | [CTA] | Brand | [ten] | |
+
+> Them hoac bot hang tuy theo `so_nguoi × 3–4 bai/tuan`. Dien ten that vao "Nguoi TH" — khong de "[ten]" chung.
+
+### Kiem tra balance tuan
+
+| Hang muc | Ke hoach | Thuc te | Dung ti le? |
+|----------|----------|---------|-------------|
+| **Pheu:** TOFU | 40% | [so] | Co / Khong |
+| **Pheu:** MOFU | 35% | [so] | |
+| **Pheu:** BOFU | 15% | [so] | |
+| **Pheu:** Retention | 10% | [so] | |
+| **Pillar:** Giao duc | 30–35% | [so] | |
+| **Pillar:** Cam hung | 20–25% | [so] | |
+| **Pillar:** Giai tri | 20–25% | [so] | |
+| **Pillar:** Ban hang | 10–15% | [so] | |
+| **Pillar:** Cong dong | 5–10% | [so] | |
+
+<!-- #/SECTION -->
+
+---
+
+<!-- #SECTION
+id: template_repurposing
+type: template
+priority: 3
+modes: [full]
+industries: [all]
+tags: [repurposing, 1to7, multi_format, distribution]
+-->
 
 ## Content Repurposing Matrix
 
 Quy tac 1:7 — moi noi dung goc tao ra it nhat 7 phien ban:
-
-### Bang repurposing
 
 | STT | Noi dung goc | Phien ban | Kenh muc tieu | Thoi luong / Do dai | Thoi gian san xuat |
 |-----|-------------|-----------|---------------|---------------------|--------------------|
@@ -189,110 +363,18 @@ Ngay 3: Gui email newsletter (30 phut)
 Ngay 3–7: Dang rai cac phien ban theo lich
 ```
 
----
-
-## Thoi gian dang toi uu — Vietnam
-
-### Gio vang theo kenh (UTC+7)
-
-| Kenh | Thu 2–6 | Thu 7 | Chu Nhat | Ghi chu |
-|------|---------|-------|----------|---------|
-| **TikTok** | 6:30–8:00, 11:30–13:00, 19:00–21:30 | 9:00–11:00, 19:00–22:00 | 10:00–12:00, 19:00–22:00 | Peak: 20:00–21:00 |
-| **Facebook** | 7:00–8:30, 11:00–13:00, 19:00–21:00 | 8:00–10:00, 19:00–21:00 | 9:00–11:00, 19:00–21:00 | Peak: 12:00, 20:00 |
-| **Instagram** | 7:00–9:00, 12:00–14:00, 18:00–20:00 | 9:00–11:00, 18:00–20:00 | 10:00–12:00 | Peak: 12:00–13:00 |
-| **Zalo OA** | 8:00–9:00, 17:00–18:30 | 9:00–10:00 | Khong gui | Gioi han 2–3 broadcast/tuan |
-| **Email** | 8:00–9:30, 14:00–15:00 | Khong gui | Khong gui | Thu 3 + Thu 5 tot nhat |
-| **YouTube** | 17:00–20:00 | 14:00–17:00 | 14:00–17:00 | Video dai — cuoi tuan tot hon |
-| **Blog/SEO** | Bat ky | Bat ky | Bat ky | Dang 2–4 bai/tuan, Google index 1–3 ngay |
-
-### Mua cao diem Vietnam
-
-| Thoi diem | Ghi chu | Dieu chinh |
-|-----------|---------|------------|
-| Tet Nguyen Dan (T1–T2) | CPM tang 30–50%, engagement tang | Tang content tru Tet, len lich truoc 2 tuan |
-| 8/3 + 20/10 | Nganh Beauty, F&B tang manh | Chay chien dich truoc 1 tuan |
-| Black Friday (T11) | E-commerce, courses | CPM tang 20–30% |
-| Back to school (T8–T9) | Education, edtech | Content giao duc tang |
-| He (T6–T8) | F&B, du lich, giai tri | Tang content giai tri, lifestyle |
+<!-- #/SECTION -->
 
 ---
 
-## AI Content Scoring
-
-Cham diem moi content truoc khi dang (thang diem 10):
-
-| Tieu chi | Trong so | Diem (1–10) | Diem x Trong so |
-|----------|----------|-------------|-----------------|
-| **Hook** (3s dau co giu chan khong?) | 25% | [diem] | |
-| **Relevance** (dung insight khach hang?) | 20% | [diem] | |
-| **Value** (khach nhan duoc gi?) | 20% | [diem] | |
-| **CTA** (ro rang, de hanh dong?) | 15% | [diem] | |
-| **Visual** (chat luong hinh/video?) | 10% | [diem] | |
-| **Brand consistency** (dung tone, mau sac?) | 10% | [diem] | |
-| **Tong** | **100%** | | **[tong]/10** |
-
-**Nguong dang:**
-- 8–10: Dang ngay, co the boost paid
-- 6–7.9: Dang duoc, can chinh sua nhe
-- 4–5.9: Can viet lai hook hoac CTA
-- <4: Khong dang, lam lai
-
----
-
-## Template lich noi dung tuan
-
-> Template duoi day tu dong dieu chinh theo nguon luc. Chi hien thi kenh va so bai phu hop.
-
-### Tuan [so] — [ngay bat dau] den [ngay ket thuc]
-
-#### Danh cho 1 nguoi (2 kenh, 5–7 bai/tuan)
-
-| Ngay | Thu | Kenh | Gio dang | Dinh dang | Tang pheu | Pillar | Chu de | Hook / Headline | CTA | Source type | Trang thai |
-|------|-----|------|----------|-----------|-----------|--------|--------|-----------------|-----|-------------|------------|
-| [ngay] | T2 | TikTok | 20:00 | Video 30s | TOFU | Giao duc | [chu de] | [hook 3s] | [CTA] | FGC | Draft |
-| [ngay] | T3 | TikTok | 12:00 | Video 15s | TOFU | Giai tri | [chu de] | [hook] | [CTA] | EGC | |
-| [ngay] | T4 | Facebook | 20:00 | Carousel | MOFU | Cam hung | [chu de] | [headline] | [CTA] | Brand | |
-| [ngay] | T5 | TikTok | 20:00 | Video 30s | MOFU | Giao duc | [chu de] | [hook] | [CTA] | UGC | |
-| [ngay] | T6 | Facebook | 12:00 | Bai viet | BOFU | Ban hang | [chu de] | [headline] | [CTA] | Brand | |
-| [ngay] | T7 | TikTok | 20:00 | Video 30s | TOFU | Giai tri | [chu de] | [hook] | [CTA] | FGC | |
-| [ngay] | CN | Zalo OA | 09:00 | Broadcast | Retention | Cong dong | [chu de] | [tieu de] | [CTA] | Brand | |
-
-#### Danh cho 2–3 nguoi (3–4 kenh, 8–12 bai/tuan)
-
-| Ngay | Thu | Kenh | Gio dang | Dinh dang | Tang pheu | Pillar | Chu de | Hook / Headline | CTA | Source type | Nguoi TH | Trang thai |
-|------|-----|------|----------|-----------|-----------|--------|--------|-----------------|-----|-------------|----------|------------|
-| [ngay] | T2 | TikTok | 20:00 | Video 30s | TOFU | Giao duc | [chu de] | [hook 3s] | [CTA] | FGC | [ten] | Draft |
-| [ngay] | T2 | Facebook | 12:00 | Carousel | MOFU | Cam hung | [chu de] | [headline] | [CTA] | Brand | [ten] | |
-| [ngay] | T3 | TikTok | 12:00 | Video 15s | TOFU | Giai tri | [chu de] | [hook] | [CTA] | EGC | [ten] | |
-| [ngay] | T3 | Email | 08:30 | Newsletter | MOFU | Giao duc | [chu de] | [subject line] | [CTA] | Brand | [ten] | |
-| [ngay] | T4 | TikTok | 20:00 | Video 30s | MOFU | Cam hung | [chu de] | [hook] | [CTA] | UGC | [ten] | |
-| [ngay] | T4 | Facebook | 20:00 | Video 60s | BOFU | Ban hang | [chu de] | [headline] | [CTA] | Brand | [ten] | |
-| [ngay] | T5 | TikTok | 12:00 | Video 15s | TOFU | Giao duc | [chu de] | [hook] | [CTA] | FGC | [ten] | |
-| [ngay] | T5 | Zalo OA | 17:00 | Broadcast | Retention | Cong dong | [chu de] | [tieu de] | [CTA] | Brand | [ten] | |
-| [ngay] | T6 | TikTok | 20:00 | Video 30s | TOFU | Giai tri | [chu de] | [hook] | [CTA] | EGC | [ten] | |
-| [ngay] | T6 | Facebook | 12:00 | Bai viet | MOFU | Giao duc | [chu de] | [headline] | [CTA] | Brand | [ten] | |
-| [ngay] | T7 | TikTok | 20:00 | Video 30s | MOFU | Cam hung | [chu de] | [hook] | [CTA] | UGC | [ten] | |
-| [ngay] | CN | Zalo OA | 09:00 | Broadcast | Retention | Cong dong | [chu de] | [tieu de] | [CTA] | Brand | [ten] | |
-
-### Kiem tra balance tuan
-
-| Hang muc | Ke hoach | Thuc te | Dung ti le? |
-|----------|----------|---------|-------------|
-| **Pheu:** TOFU | 40% (6 bai) | [so] | Co / Khong |
-| **Pheu:** MOFU | 35% (5 bai) | [so] | |
-| **Pheu:** BOFU | 15% (2 bai) | [so] | |
-| **Pheu:** Retention | 10% (2 bai) | [so] | |
-| **Pillar:** Giao duc | 30–35% | [so] | |
-| **Pillar:** Cam hung | 20–25% | [so] | |
-| **Pillar:** Giai tri | 20–25% | [so] | |
-| **Pillar:** Ban hang | 10–15% | [so] | |
-| **Pillar:** Cong dong | 5–10% | [so] | |
-| **Source:** FGC | 25–30% | [so] | |
-| **Source:** Brand | 30–35% | [so] | |
-| **Source:** UGC | 20–25% | [so] | |
-| **Source:** EGC | 10–15% | [so] | |
-
----
+<!-- #SECTION
+id: reference_frequency
+type: reference
+priority: 3
+modes: [full]
+industries: [all]
+tags: [frequency, posting_rate, channel_limits]
+-->
 
 ## Tan suat dang khuyen nghi theo kenh
 
@@ -306,7 +388,18 @@ Cham diem moi content truoc khi dang (thang diem 10):
 | YouTube | 1 video/tuan | 1–2 video/tuan | 2 video/tuan | Chat luong > so luong |
 | Blog/SEO | 1 bai/tuan | 2–4 bai/tuan | 1 bai/ngay | SEO can thoi gian |
 
+<!-- #/SECTION -->
+
 ---
+
+<!-- #SECTION
+id: skill_chaining
+type: logic
+priority: 2
+modes: [all]
+industries: [all]
+tags: [chaining, cross_reference, related_skills]
+-->
 
 ## Cross-reference
 
@@ -318,17 +411,29 @@ Cham diem moi content truoc khi dang (thang diem 10):
 | Insight de chon chu de | `09-insight-khach-hang` |
 | Ke hoach tong the (lich nam trong do) | `00-ke-hoach-mkt` |
 
+<!-- #/SECTION -->
+
 ---
+
+<!-- #SECTION
+id: quality_checklist
+type: output_schema
+priority: 1
+modes: [all]
+industries: [all]
+tags: [quality, checklist, validation, pre_delivery]
+-->
 
 ## Checklist chat luong
 
 Truoc khi giao lich noi dung, kiem tra:
 
-- [ ] So bai/tuan phu hop voi nguon luc (1 nguoi: 5–7 / 2–3 nguoi: 8–12 / 4+: 15+)
-- [ ] So kenh phu hop voi nguon luc (khong ep them kenh khi khong co nguoi lam)
+- [ ] So bai/tuan = so nguoi × 3–4 (tinh tu Buoc 3)
+- [ ] So kenh = min(so nguoi + 1, 5) — khong ep them kenh khi khong co nguoi lam
+- [ ] Cot "Nguoi TH" dien ten that — khong de trong hoac "[ten]" chung
 - [ ] Ti le pheu cong dung: TOFU 40% + MOFU 35% + BOFU 15% + Retention 10%
 - [ ] Content pillar balance — khong lech qua 10%
-- [ ] Source type mix doc tu memory / Skill 00 — khong tu quyet dinh lai
+- [ ] Source type mix doc tu session_context / Skill 00 — khong tu quyet dinh lai
 - [ ] Vi du Content Matrix dung nganh cua khach — khong dung vi du marketing chung
 - [ ] Moi bai co hook/headline cu the — khong de trong
 - [ ] Moi bai co CTA ro rang
@@ -339,3 +444,5 @@ Truoc khi giao lich noi dung, kiem tra:
 - [ ] Email khong qua 2 email/tuan (tru chuoi welcome)
 - [ ] AI Content Score >= 6 cho moi bai
 - [ ] Mode quick: chi tra lich tuan + 5 y tuong / Mode full: day du + xuat Sheet
+
+<!-- #/SECTION -->

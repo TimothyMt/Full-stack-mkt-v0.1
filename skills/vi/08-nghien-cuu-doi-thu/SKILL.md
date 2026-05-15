@@ -1,8 +1,10 @@
 ---
 name: 08-nghien-cuu-doi-thu
-description: Phan tich doi thu canh tranh 3 tang (truc tiep, gian tiep, thu cap) — dinh vi, SWOT, content benchmark, tim khoang trong thi truong
+description: Phan tich doi thu canh tranh 3 tang (truc tiep, gian tiep, thu cap) — dinh vi, SWOT, content benchmark, tim khoang trong thi truong va de xuat hanh dong cu the.
+skill_id: "08-nghien-cuu-doi-thu"
+agent: "mkt-strategist"
 metadata:
-  version: 2.2.0
+  version: 3.0.0
   category: strategy
 triggers:
   - "nghien cuu doi thu"
@@ -10,374 +12,274 @@ triggers:
   - "doi thu dang lam gi"
   - "competitive analysis"
   - "phan tich doi thu"
-output: File .md gom ban do dinh vi, SWOT, content benchmark, khoang trong thi truong, va de xuat hanh dong
+output: File .md / Google Sheet gom ban do dinh vi, SWOT, content benchmark, khoang trong thi truong, va de xuat hanh dong
 related:
   - 09-insight-khach-hang
   - 00-ke-hoach-mkt
   - 02-brief-chien-dich
   - 05-copy-quang-cao
-  - references/mcp-ads-integration
+context_requirements:
+  required: []
+  optional:
+    - industry          # co → dung benchmark dung nganh
+    - active_channels   # co → biet kenh nao can so sanh trong content benchmark
+    - business_name     # co → skip hoi lai thuong hieu
 ---
 
 # Nghien Cuu Doi Thu Canh Tranh
 
+---
+
 ## Thu thap thong tin
 
-Hoi user toi da 4 cau sau truoc khi bat dau:
+Hoi toi da 3 cau truoc khi bat dau:
 
-1. **San pham / dich vu cua ban la gi?** (Nganh, phan khuc gia, doi tuong chinh)
-2. **Ke ten 2–5 doi thu ma ban biet** (ten thuong hieu, link fanpage/TikTok/website neu co)
-3. **Ban dang lo nhat dieu gi ve doi thu?** (Ho ban re hon? Content hay hon? Ads manh hon? Chiem thi phan?)
-4. **Muc tieu cua ban sau khi co bao cao nay?** (Dinh vi lai? Lam content tot hon? Tim khoang trong? Chay ads hieu qua hon?)
+1. **San pham / dich vu cua ban la gi?** (Nganh, phan khuc gia, doi tuong chinh, khu vuc hoat dong)
+2. **Link fanpage / TikTok / website doi thu?** (Dan link neu co — cang nhieu cang tot. Neu chua co → biet ten thuong hieu la du, he thong se tu tim)
+3. **Ban dang lo nhat dieu gi ve doi thu?** (Ho ban re hon? Content hay hon? Dang chiem khach cua ban? Hay moi vao thi truong?)
 
-### Auto-research qua MCP (neu co ket noi)
+---
 
-> Xem huong dan setup: `skills/references/mcp-ads-integration.md`
-> **Meta Official MCP:** `https://mcp.facebook.com/ads` — setup 5 phut qua `claude.ai/settings/integrations`
+## Nguon data doi thu
 
-#### A. Facebook Ads Library MCP (Nghien cuu quang cao doi thu)
+### Co link fanpage / TikTok / website
 
-**Facebook Ads Library MCP** (`facebook-ads-library-mcp`) cho phep tu dong:
+He thong tu dong pull:
+- **Quang cao dang chay** — creative nao, format gi, hook gi, CTA gi, chay bao lau
+- **Content organic** — bai nao hieu qua nhat, tan suat dang, goc do noi dung
+- **Google presence** — xep hang tu khoa, review, Google Business
 
-| Chuc nang | Mo ta |
-|-----------|-------|
-| **Search quang cao doi thu** | Tim tat ca ads dang chay cua 1 brand theo ten page |
-| **Phan tich creative** | AI phan tich hook, format, tone, CTA cua tung ad |
-| **Competitor discovery** | Tu dong tim doi thu tuong tu trong nganh |
-| **Spend estimation** | Uoc tinh ngan sach quang cao cua doi thu |
-| **Trend monitoring** | Theo doi thay doi chien dich theo thoi gian thuc |
-| **Market gap** | So sanh nhieu brand → tim khoang trong |
+> Khach hang chi can cung cap link — khong can tu setup bat ky cong cu nao.
 
-**Cach dung:**
-1. Setup `facebook-ads-library-mcp` (can Facebook access token voi `ads_read`)
-2. Nhap ten page doi thu → MCP tra ve danh sach ads dang active
-3. Phan tich: format nao nhieu nhat? Hook gi? CTA gi? Chay bao lau?
-4. So sanh voi ads cua minh → tim gap va co hoi
+### Khong co link — tim manual
 
-> **Luu y:** Ads Library MCP chi cho phep XEM quang cao cong khai cua doi thu — khong truy cap data noi bo (spend chinh xac, targeting, conversion). Spend chi la uoc tinh.
-
-#### B. Meta Official MCP (Benchmarks va boi canh nganh)
-
-Neu da ket noi Meta Official MCP (`mcp.facebook.com/ads`), co the bo sung nghien cuu doi thu bang data chinh thuc:
-
-| Tool | Dung cho |
-|------|---------|
-| `ads_insights_advertiser_context` | Data boi canh nganh va khu vuc — biet "san choi" rong the nao |
-| `ads_insights_industry_benchmark` | CPM, CTR, CPC trung binh nganh — benchmark de so sanh |
-| `ads_insights_auction_ranking_benchmarks` | Quality ranking, engagement ranking cua MINH vs doi thu trong dau gia |
-
-**Ket hop 2 nguon:**
-```
-Ads Library MCP → Xem creative + strategy doi thu (QUAN SAT)
-Meta Official MCP → So sanh metrics cua minh vs nganh (DO LUONG)
-→ Gap analysis chinh xac hon: biet doi thu lam gi + biet minh dang o dau so voi trung binh
-```
+| Nguon | Cach tim |
+|-------|---------|
+| Facebook Ads Library | ads.facebook.com/ads/library → search ten brand → xem tat ca ads dang chay |
+| TikTok search | Tim ten thuong hieu tren TikTok → xem video + so luong view |
+| Google search | "[ten nganh] + [khu vuc]" → xem ai xuat hien trang 1, Google Business, review |
+| Shopee / Lazada | Tim shop doi thu → xem so don, review, san pham ban chay |
+| Facebook Group nganh | Doc comment, bai post noi den doi thu — khach hang thuong so sanh o day |
 
 ---
 
 ## Mo hinh doi thu 3 tang
 
-Phan loai doi thu thanh 3 nhom — khong chi nhin doi thu truc tiep:
+Khong chi nhin doi thu truc tiep — phan loai du 3 nhom:
 
-| Tang | Dinh nghia | Tieu chi | Vi du (Spa trung cap) |
-|------|-----------|----------|----------------------|
-| **Truc tiep** | Cung phan khuc, cung loai hinh, cung doi tuong | Cung gia, cung dich vu, cung khu vuc | Spa B cung pho, gia tuong tu |
-| **Gian tiep tiem nang** | Khac loai hinh nhung thay the duoc | Khach hang co the chon ho thay vi ban | Tham my vien, skincare tai nha, may lam dep gia dinh |
+| Tang | Dinh nghia | Tieu chi | Vi du (Spa trung cap HCM) |
+|------|-----------|----------|--------------------------|
+| **Truc tiep** | Cung phan khuc, cung loai hinh, cung doi tuong | Cung gia, cung dich vu, cung khu vuc | Spa B cung quan, gia tuong tu |
+| **Gian tiep** | Khac loai hinh nhung thay the duoc | Khach co the chon ho thay vi ban | Tham my vien, skincare tai nha, may lam dep gia dinh |
 | **Thu cap** | Cung loai hinh nhung khac phan khuc gia | Canh tranh khi khach thay doi ngan sach | Spa cao cap (khach ha budget), spa binh dan (khach nang cap) |
 
-### Nguyen tac phan loai
-
-- Doi thu truc tiep: chon 3–5 doi thu chinh
-- Gian tiep tiem nang: chon 2–3 loai hinh thay the
-- Thu cap: chon 1–2 doi thu o phan khuc gia ke ben
+**Quy tac chon:** 3–5 doi thu truc tiep + 2–3 gian tiep + 1–2 thu cap.
 
 ---
 
-## Cau truc phan tich moi doi thu
+## Phan tich 5 khia canh cot loi
 
-Voi moi doi thu, phan tich 8 khia canh:
+Ap dung cho tung doi thu. Voi moi khia canh, dien thong tin thuc te — khong doan.
 
-### 1. Dinh vi thuong hieu
+### 1. Dinh vi + USP
 
 | Yeu to | Noi dung |
 |--------|---------|
 | Thong diep chinh | [Slogan, tagline, loi hua thuong hieu] |
-| Phong cach hinh anh | [Tone mau, kieu anh, chat video] |
 | Phan khuc gia | [Thap / Trung / Cao / Cao cap] |
-| Doi tuong muc tieu | [Gioi tinh, tuoi, thu nhap, so thich] |
-| USP tuyên bo | [Ho noi ho khac biet gi?] |
+| USP tuyen bo | [Ho noi ho khac biet gi?] |
+| Phong cach hinh anh | [Tone mau, kieu anh, chat video] |
+| Doi tuong muc tieu | [Gioi tinh, tuoi, thu nhap nhan thay duoc] |
 
-### 2. Diem manh va diem yeu
+### 2. Diem manh / Diem yeu
 
 | Diem manh | Diem yeu |
-|-----------|----------|
-| [Liet ke 3–5 diem] | [Liet ke 3–5 diem] |
+|-----------|---------|
+| [3–5 diem — co bang chung cu the] | [3–5 diem — co bang chung cu the] |
 
-### 3. Chien luoc noi dung
+> **Luu y:** Chi ghi diem co bang chung quan sat duoc (review, comment, so lieu). Khong doan.
+
+### 3. Noi dung + kenh
 
 | Chi so | Gia tri |
 |--------|---------|
-| Kenh chinh | [Facebook / TikTok / Instagram / YouTube / Zalo] |
+| Kenh dang tot nhat | [Facebook / TikTok / Instagram / YouTube / Zalo] |
 | Tan suat dang | [X bai/tuan] |
-| Dinh dang uu tien | [Video ngan / Carousel / Bai viet dai / Reels] |
+| Dinh dang uu tien | [Video ngan / Carousel / Bai viet / Reels] |
 | Tone of voice | [Chuyen nghiep / Than thien / Hai huoc / Giao duc] |
-| Goc do noi dung | [TOFU X% / MOFU X% / BOFU X%] |
-| Noi dung hieu qua nhat | [Top 3 bai/video cao tuong tac nhat] |
+| Goc do noi dung pho bien | [Review / Giao duc / Behind-the-scenes / Khuyen mai] |
+| Bai/video hieu qua nhat | [Top 3 — co so view/tuong tac cu the] |
 
-### 4. Kenh va platform
+### 4. Quang cao dang chay
 
-| Kenh | Co / Khong | Follower / Like | Danh gia hoat dong |
-|------|-----------|----------------|-------------------|
-| Facebook Page | | | |
-| TikTok | | | |
-| Instagram | | | |
-| YouTube | | | |
-| Zalo OA | | | |
-| Website | | | |
-| Email | | | |
+> Pull tu Ads Library neu co link. Tim manual neu khong co.
 
-### 5. Uoc tinh chi phi quang cao
+| Chi so | Noi dung |
+|--------|---------|
+| So ads dang active | [X ads] |
+| Format pho bien nhat | [Video / Anh / Carousel] |
+| Hook hay dung | [Kieu hook: so sanh / truoc-sau / con so / testimonial] |
+| CTA pho bien | [Nhan tin / Dat lich / Tim hieu them] |
+| Uoc tinh ngan sach/thang | [Thap <20tr / Trung 20–50tr / Cao >50tr] |
+| Da chay bao lau | [Moi chay / Chay 1–3 thang / Chay lau >3 thang] |
 
-Phuong phap uoc tinh (khong can chinh xac tuyet doi):
+### 5. Gia + Offer
 
-| Dau hieu | Cach doc |
-|----------|---------|
-| So bai sponsored/thang | Dem bai co nhan "Sponsored" trong Facebook Ad Library |
-| Luong video ads tren TikTok | Dung TikTok Creative Center → Top Ads → loc theo nganh |
-| Traffic website | Dung SimilarWeb (free tier) hoac Semrush |
-| So luong KOL/UGC | Dem so video co ten thuong hieu tren TikTok |
+| San pham / Dich vu | Gia doi thu | Gia cua ban | Chenh lech | Ghi chu |
+|-------------------|------------|-------------|-----------|--------|
+| [SP/DV 1] | | | | |
+| [SP/DV 2] | | | | |
+| [SP/DV 3] | | | | |
 
-| Chi so uoc tinh | Gia tri |
-|-----------------|---------|
-| So ads dang chay (Facebook Ad Library) | [X ads] |
-| Ngan sach ads uoc tinh/thang | [X trieu — dua tren so ads x CPM trung binh] |
-| Co UGC/KOL khong? | [Co/Khong — neu co, uoc tinh X nguoi] |
+**Kem theo:** Ho co goi combo / goi lieu trinh / uu dai gi dac biet khong?
 
-### 6. Doi tuong trung lap (Audience Overlap)
+---
 
-| Yeu to | Muc do trung lap |
-|--------|-----------------|
-| Dia ly | [Cao / Trung binh / Thap] |
-| Do tuoi | [Cao / Trung binh / Thap] |
-| Thu nhap | [Cao / Trung binh / Thap] |
-| So thich | [Cao / Trung binh / Thap] |
-| Kenh su dung | [Cao / Trung binh / Thap] |
+## Khia canh bo sung theo nganh
 
-### 7. Gia va mo hinh kinh doanh
+> Chi dien nhung khia canh phu hop — khong ap dung cu toan bo.
 
-| San pham/dich vu | Gia doi thu | Gia cua ban | Chenh lech |
-|-----------------|------------|-------------|-----------|
-| [SP 1] | | | |
-| [SP 2] | | | |
-| [SP 3] | | | |
-
-### 8. Danh gia moi de doa
-
-| Doi thu | Muc do de doa | Ly do |
-|---------|--------------|-------|
-| [Ten] | Cao / Trung binh / Thap | [1 cau ngan] |
+| Nganh | Khia canh bo sung |
+|-------|------------------|
+| **Spa / Beauty** | Review Google + Facebook (so sao, noi dung phan hoi); Phong kham + khong gian (hinh anh); Chinh sach hoan tien / bao hanh ket qua |
+| **Clinic tham my** | Bac si / chung chi; Thiet bi cong nghe dang quang cao; Review truoc-sau; Gia lieu trinh vs don le |
+| **F&B** | Vi tri + so chi nhanh; Delivery (co Grab/Baemin khong?); Menu gia + mon ban chay |
+| **Gym / Yoga** | Lich lop + PT; App / cong nghe ho tro; Gia goi thang vs goi dai han |
+| **Giao duc** | Giang vien / mentor; Dau ra hoc vien; Hinh thuc hoc (online/offline/hybrid); Hoc phi + chinh sach tra gop |
+| **Ecommerce** | So don Shopee/Lazada; Rating + review; Mechanic khuyen mai (flash sale, combo, free ship) |
 
 ---
 
 ## SWOT — Thuong hieu cua ban vs Doi thu
 
-### Bang SWOT tong hop
-
 | | **Tich cuc** | **Tieu cuc** |
 |---|---|---|
-| **Ben trong** | **STRENGTHS** — Diem manh cua ban ma doi thu khong co hoac yeu hon | **WEAKNESSES** — Diem yeu cua ban ma doi thu dang khai thac |
-| **Ben ngoai** | **OPPORTUNITIES** — Khoang trong thi truong doi thu chua chiem | **THREATS** — Xu huong/hanh dong cua doi thu de doa ban |
+| **Ben trong** | **STRENGTHS** — Diem manh cua ban ma doi thu khong co / yeu hon | **WEAKNESSES** — Diem yeu cua ban ma doi thu dang khai thac |
+| **Ben ngoai** | **OPPORTUNITIES** — Khoang trong thi truong doi thu chua chiem | **THREATS** — Hanh dong cua doi thu dang de doa ban |
 
 ### Chi tiet
 
-**Strengths (Diem manh)**
-| STT | Diem manh | Doi thu nao yeu o diem nay? | Cach phat huy |
-|-----|----------|---------------------------|--------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+**Strengths**
+| Diem manh | Doi thu nao yeu o diem nay? | Cach phat huy |
+|----------|---------------------------|--------------|
+| | | |
 
-**Weaknesses (Diem yeu)**
-| STT | Diem yeu | Doi thu nao manh o diem nay? | Cach khac phuc |
-|-----|---------|---------------------------|---------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+**Weaknesses**
+| Diem yeu | Doi thu nao manh o diem nay? | Uu tien khac phuc |
+|---------|---------------------------|------------------|
+| | | |
 
-**Opportunities (Co hoi)**
-| STT | Co hoi | Tai sao doi thu chua lam? | Hanh dong de xuat |
-|-----|--------|--------------------------|-------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+**Opportunities**
+| Co hoi | Tai sao doi thu chua lam? | Hanh dong de nam bat |
+|--------|--------------------------|---------------------|
+| | | |
 
-**Threats (Moi de doa)**
-| STT | De doa | Tu doi thu nao? | Cach phong thu |
-|-----|--------|-----------------|---------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+**Threats**
+| Moi de doa | Tu doi thu nao? | Cach phong thu |
+|-----------|----------------|---------------|
+| | | |
 
 ---
 
 ## Ban do dinh vi (Positioning Map)
 
-Ma tran 2x2 — chon 2 truc phu hop voi nganh:
+Ma tran 2x2 — chon 2 truc phu hop nganh:
 
-### Truc mac dinh: Gia x Chat luong cam nhan
-
-```
-        CHAT LUONG CAO
-             |
-             |
-  Doi thu C  |  [BAN]
-  (gia re,   |  (gia vua,
-   chat tot) |   chat tot)
-             |
-------- THAP -------- CAO ---- GIA
-             |
-  Doi thu A  |  Doi thu B
-  (gia re,   |  (gia cao,
-   chat thap)|   chat thap)
-             |
-        CHAT LUONG THAP
-```
-
-### Truc thay the (tuy nganh)
-
-| Truc X (ngang) | Truc Y (doc) | Phu hop voi nganh |
-|---------------|-------------|-------------------|
+| Truc X (ngang) | Truc Y (doc) | Phu hop nganh |
+|---------------|-------------|--------------|
 | Gia | Chat luong cam nhan | Spa, F&B, thoi trang |
 | Truyen thong vs Hien dai | Dai chung vs Niche | Giao duc, cong nghe |
 | Tien loi vs Trai nghiem | Binh dan vs Cao cap | F&B, ban le |
 | Online vs Offline | Tu phuc vu vs Full service | Dich vu, SaaS |
 
-**Huong dan doc ban do:**
-- Goc ban o = vung canh tranh khoc liet, can tranh
+```
+        TRUC Y CAO
+             |
+    [Doi thu C]  |  [BAN]
+             |
+---THAP------+------CAO--- TRUC X
+             |
+    [Doi thu A]  |  [Doi thu B]
+             |
+        TRUC Y THAP
+```
+
+**Doc ban do:**
+- Goc ban o = vung canh tranh khoc liet → can yeu to khac biet
 - Goc trong = khoang trong co the chiem
-- Goc dong = co nhieu doi thu, can yeu to khac biet manh
+- Qua gan doi thu = dang bi nhin la "ban sao"
 
 ---
 
-## Tim khoang trong thi truong (Market Gap)
-
-### Framework 5 loai khoang trong
+## Khoang trong thi truong (Market Gap)
 
 | Loai khoang trong | Cau hoi kiem tra | Phat hien |
-|-------------------|-----------------|-----------|
-| **Khoang trong san pham** | Co nhu cau nao khach dang tu giai quyet (DIY) ma chua ai phuc vu? | |
-| **Khoang trong gia** | Co phan khuc gia nao chua co ai chiem? (giua binh dan va cao cap) | |
-| **Khoang trong kenh** | Co kenh nao doi thu bo ngo? (Zalo? Email? TikTok Shop? SEO?) | |
-| **Khoang trong noi dung** | Co goc do noi dung nao chua ai lam? (behind scenes? giao duc? data?) | |
-| **Khoang trong trai nghiem** | Co buoc nao trong hanh trinh khach hang chua ai lam tot? | |
+|------------------|-----------------|-----------|
+| **San pham** | Co nhu cau nao khach dang tu giai quyet (DIY) ma chua ai phuc vu? | |
+| **Gia** | Co phan khuc gia nao trong? (giua binh dan va cao cap) | |
+| **Kenh** | Co kenh nao doi thu bo ngo? (Zalo? Email? TikTok Shop?) | |
+| **Noi dung** | Co goc do noi dung nao chua ai lam? (giao duc? data? behind-scenes?) | |
+| **Trai nghiem** | Co buoc nao trong hanh trinh khach hang chua ai lam tot? | |
 
-### Danh gia khoang trong
-
-| Khoang trong | Muc do hap dan (1–5) | Kha thi (1–5) | Uu tien |
-|-------------|---------------------|---------------|---------|
-| [Gap 1] | | | Cao / Trung binh / Thap |
+| Khoang trong | Hap dan (1–5) | Kha thi (1–5) | Uu tien |
+|-------------|--------------|--------------|---------|
+| [Gap 1] | | | Cao / TB / Thap |
 | [Gap 2] | | | |
 | [Gap 3] | | | |
 
 ---
 
-## Content Benchmark — Noi dung hieu qua nhat cua doi thu
+## Content Benchmark
 
-### Phan tich top-performing content
+Voi moi doi thu, chon 5 bai/video hieu qua nhat trong 30 ngay:
 
-Voi moi doi thu, chon 5 bai/video co tuong tac cao nhat trong 30 ngay gan nhat:
+| Doi thu | Dinh dang | Goc do | View/Reach | Engagement | Tai sao hieu qua? |
+|---------|----------|--------|-----------|------------|------------------|
+| | | | | | |
 
-| STT | Doi thu | Dinh dang | Goc do | View/Reach | Engagement | Tai sao hieu qua? |
-|-----|---------|----------|--------|-----------|------------|-------------------|
-| 1 | | | | | | |
-| 2 | | | | | | |
-| 3 | | | | | | |
-| 4 | | | | | | |
-| 5 | | | | | | |
+**Pattern rut ra:**
 
-### Rut ra pattern
-
-| Pattern | Mo ta | Ap dung cho ban |
-|---------|-------|----------------|
-| Hook pho bien | [Kieu hook doi thu hay dung] | [Ap dung / Khong ap dung — ly do] |
-| Dinh dang manh | [Video/Carousel/Text nao hieu qua?] | |
-| Thoi gian dang | [Gio nao, ngay nao?] | |
-| CTA hay dung | [Loai CTA nao?] | |
-| Yeu to viral | [Diem chung cua content hieu qua?] | |
-
----
-
-## Hoc gi vs Khong copy gi
-
-### NEN hoc tu doi thu
-
-| Bai hoc | Tu doi thu nao | Ap dung the nao |
-|---------|---------------|----------------|
-| Format noi dung hieu qua | | [Mo ta cach adapt] |
-| Kenh dang tot | | [Mo ta cach trien khai] |
-| Cach xu ly khach hang | | [Mo ta cach cai tien] |
-| Chien luoc gia | | [Mo ta cach dieu chinh] |
-
-### KHONG NEN copy
-
-| Dieu khong nen copy | Ly do | Lam gi thay the |
-|--------------------|-------|----------------|
-| Copy y nguyen noi dung | Mat ban sac, bi so sanh bat loi | Lay y tuong roi adapt theo brand voice cua ban |
-| Chay theo gia thap | Cuoc dua ve day, khong ben vung | Canh tranh bang gia tri, khong bang gia |
-| Bat chuoc dinh vi | Tro thanh "ban sao re hon" | Tim goc doc, dinh vi khac biet |
-| Theo trend ho da lam | Di sau, mat hieu qua | Tim trend moi hoac goc do moi cho trend cu |
-
----
-
-## Danh gia competitive moat (Hao bao ve)
-
-| Loai moat | Doi thu co? | Ban co? | Hanh dong |
-|-----------|-----------|--------|----------|
-| **Brand recognition** — Khach nho den ho dau tien | | | |
-| **Network effect** — Cang nhieu khach, cang hap dan | | | |
-| **Switching cost** — Khach kho chuyen di | | | |
-| **Data advantage** — Ho co du lieu khach hang lon | | | |
-| **Content library** — Kho noi dung lon, SEO manh | | | |
-| **Community** — Cong dong trung thanh | | | |
-| **Distribution** — He thong phan phoi/kenh manh | | | |
+| Pattern | Mo ta | Ap dung cho ban? |
+|---------|-------|-----------------|
+| Hook pho bien | | |
+| Dinh dang manh | | |
+| Thoi gian dang tot | | |
+| CTA hay dung | | |
 
 ---
 
 ## Bang hanh dong
 
-### De xuat uu tien
+| STT | Hanh dong | Dua tren phat hien | Hoc tu doi thu nao | Luu y (khong copy gi) | Uu tien | Timeline |
+|-----|----------|--------------------|--------------------|----------------------|---------|---------|
+| 1 | | | | | Cao | Tuan 1–2 |
+| 2 | | | | | Cao | Tuan 2–4 |
+| 3 | | | | | TB | Thang 2 |
+| 4 | | | | | TB | Thang 3 |
 
-| STT | Hanh dong | Dua tren phat hien | Muc do khan cap | Timeline |
-|-----|----------|--------------------|-----------------|---------| 
-| 1 | | | Cao / Trung binh | Tuan 1–2 |
-| 2 | | | | Tuan 2–4 |
-| 3 | | | | Thang 2 |
-| 4 | | | | Thang 3 |
-| 5 | | | | Dai han |
+> **Nguyen tac:** Hoc pattern (format, goc do, timing) — KHONG copy loi thoai hay y tuong nguyen van. Copy y nguyen = mat ban sac + rui ro phap ly.
 
 ---
 
 ## Cross-reference
 
-- Can hieu khach hang sau hon? → Dung `09-insight-khach-hang`
-- Muon dinh vi lai va viet brief? → Dung `02-brief-chien-dich`
-- Can viet copy khac biet doi thu? → Dung `05-copy-quang-cao`
-- Can tinh ngan sach canh tranh? → Dung `10-tinh-kpi-nguoc`
-- Can xay ke hoach MKT tong the? → Dung `00-ke-hoach-mkt`
+| Khi can | Goi skill |
+|---------|-----------|
+| Hieu khach hang sau hon | `09-insight-khach-hang` |
+| Dinh vi lai va viet brief chien dich | `02-brief-chien-dich` |
+| Viet copy khac biet doi thu | `05-copy-quang-cao` |
+| Xay ke hoach MKT tong the | `00-ke-hoach-mkt` |
 
 ---
 
 ## Checklist chat luong
 
-Truoc khi giao bao cao, kiem tra:
-
 - [ ] Da phan loai doi thu theo 3 tang (truc tiep, gian tiep, thu cap)
-- [ ] Moi doi thu co du 8 khia canh phan tich
-- [ ] SWOT co cu the, khong chung chung — moi diem co doi thu cu the di kem
-- [ ] Ban do dinh vi co truc phu hop voi nganh
+- [ ] Moi doi thu co du 5 khia canh cot loi — chi ghi dieu quan sat duoc, khong doan
+- [ ] Da bo sung khia canh theo nganh phu hop
+- [ ] SWOT cu the — moi diem co doi thu cu the di kem
+- [ ] Ban do dinh vi chon dung truc phu hop nganh
 - [ ] Da tim it nhat 3 khoang trong thi truong
-- [ ] Content benchmark co du lieu cu the (link, so lieu), khong phai nhan dinh suong
-- [ ] Phan "Hoc gi vs Khong copy gi" co hanh dong cu the
-- [ ] Competitive moat duoc danh gia ca doi thu va ban
-- [ ] Bang hanh dong co timeline va muc do khan cap
-- [ ] Khong co nhan dinh thieu co so — moi ket luan phai co du lieu hoac quan sat cu the
+- [ ] Content benchmark co so lieu cu the (view, engagement) — khong phai nhan dinh suong
+- [ ] Bang hanh dong co timeline va ghi ro "hoc gi / khong copy gi"
+- [ ] Khong co ket luan thieu co so — moi nhan dinh phai co nguon

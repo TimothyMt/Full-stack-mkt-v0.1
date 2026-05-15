@@ -1,9 +1,17 @@
 ---
 name: 31-winback-campaign
-description: Kịch bản win-back khách đã bỏ — gợi ý cụ thể theo ngành, đối tượng, kênh liên hệ và offer phù hợp. Không cần data CRM.
+description: Kich ban win-back khach da bo — phan loai ly do, sequence 3 buoc, offer tang dan, kich ban theo nganh, loi pho bien can tranh.
+skill_id: "31-winback-campaign"
+agent: "mkt-strategist"
 metadata:
-  version: 1.0.0
+  version: 2.0.0
   category: strategy
+context_requirements:
+  required: []
+  optional:
+    - industry
+    - business_name
+    - active_channels
 triggers:
   - "win-back"
   - "khách lâu không quay lại"
@@ -29,7 +37,9 @@ related:
 
 ## Thu thập thông tin
 
-Hỏi tối đa 2 câu:
+Neu session_context da co industry → chi hoi cau 2.
+
+Neu chua co, hoi 2 cau:
 
 1. **Ngành và loại dịch vụ?** (Spa / Clinic / F&B / Gym / Ecommerce / Giáo dục / Khác)
 2. **Đối tượng cần win-back là ai?**

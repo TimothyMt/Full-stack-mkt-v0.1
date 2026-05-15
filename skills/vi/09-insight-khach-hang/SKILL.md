@@ -1,8 +1,10 @@
 ---
 name: 09-insight-khach-hang
-description: Xay dung chan dung khach hang sau — Consumer vs Shopper, JTBD, hanh trinh mua hang, insight validation, internal monologue
+description: Xay dung chan dung khach hang sau — Consumer vs Shopper, JTBD, hanh trinh mua hang, insight validation, internal monologue, phan tang hanh vi.
+skill_id: "09-insight-khach-hang"
+agent: "mkt-strategist"
 metadata:
-  version: 2.0.0
+  version: 3.0.0
   category: strategy
 triggers:
   - "insight khach hang"
@@ -11,24 +13,38 @@ triggers:
   - "khach hang dang nghi gi"
   - "persona"
   - "customer journey"
-output: File .md gom persona chi tiet, insight theo 4 giai doan, JTBD, hanh trinh khach hang, va phan tang hanh vi
+output: File .md / Google Sheet gom persona chi tiet, insight 4 giai doan, JTBD, hanh trinh khach hang, phan tang hanh vi
+context_requirements:
+  required: []
+  optional:
+    - industry
+    - target_audience
+    - business_name
 related:
   - 08-nghien-cuu-doi-thu
   - 00-ke-hoach-mkt
   - 05-copy-quang-cao
   - 02-brief-chien-dich
   - 04-script-video
+  - 30-retention-strategy
 ---
 
 # Insight Khach Hang
 
+---
+
 ## Thu thap thong tin
 
-Hoi user toi da 4 cau sau truoc khi bat dau:
+**Neu session_context da co industry + target_audience:** Chi hoi 2 cau sau:
+
+3. **Ban co du lieu khach hang chua?** (CRM, comment/inbox, review, khao sat — chia se neu co)
+4. **Ban muon hieu khach hang de lam gi?** (Viet content? Chay ads? Dinh vi lai? Ra san pham moi? Cai thien dich vu?)
+
+**Neu chua co context:** Hoi du 4 cau:
 
 1. **San pham / dich vu cua ban la gi?** (Nganh, phan khuc gia, dia ban hoat dong)
 2. **Khach hang hien tai cua ban la ai?** (Gioi tinh, do tuoi, muc gia thuong mua, kenh ho tim den ban)
-3. **Ban co du lieu khach hang chua?** (Data CRM, comment/inbox, review, khao sat — neu co, chia se)
+3. **Ban co du lieu khach hang chua?** (CRM, comment/inbox, review, khao sat — chia se neu co)
 4. **Ban muon hieu khach hang de lam gi?** (Viet content? Chay ads? Dinh vi lai? Ra san pham moi? Cai thien dich vu?)
 
 ---
@@ -54,7 +70,7 @@ Khong phai ai mua cung la nguoi dung, va nguoi dung khong phai luc nao cung la n
 
 ---
 
-## Framework Insight 4 giai doan
+## Framework Insight 4 Giai Doan
 
 Moi giai doan trong hanh trinh mua hang co insight khac nhau:
 
@@ -89,14 +105,14 @@ Moi giai doan trong hanh trinh mua hang co insight khac nhau:
 | Rao can | So het tien, so mua roi hoi han, quy trinh dat phuc tap |
 | Content can thiet | Uu dai, khan cap, social proof manh, CTA ro rang |
 | Kenh hieu qua | Messenger/Zalo (tu van 1:1), Landing page, Retarget ads |
-| Vi du insight | "Ho da sẵn sàng mua nhung can chong dong y — nen gui thong tin cho ca hai" |
+| Vi du insight | "Ho da san sang mua nhung can chong dong y — nen gui thong tin cho ca hai" |
 
 ### Giai doan 4 — Retention (Tai sao ho quay lai hoac khong)
 
 | Yeu to | Noi dung |
 |--------|---------|
 | Trang thai | Da mua/dung — dang danh gia co quay lai khong |
-| Cau hoi trong dau ho | "Co dang tiep tuc khong?" / "Co cho nao tot hon khong?" / "Co gi moi khong?" |
+| Cau hoi trong dau ho | "Co dang tiep tuc khong?" / "Co gi moi khong?" |
 | Rao can | Quen, khong co ly do quay lai, trai nghiem lan truoc chua tot |
 | Content can thiet | Follow-up, gia tri doc quyen, chuong trinh khach than thiet |
 | Kenh hieu qua | Zalo OA broadcast, Email nurture, Community VIP |
@@ -182,11 +198,10 @@ va cam thay [cam xuc muc tieu].
 | Google Search | | |
 | Blog / Website | | |
 | Email | | |
-| Podcast | | |
 
 ---
 
-## Hanh trinh khach hang (Customer Journey Map)
+## Hanh Trinh Khach Hang (Customer Journey Map)
 
 ### Template hanh trinh
 
@@ -199,12 +214,23 @@ va cam thay [cam xuc muc tieu].
 | **Mua/Dung** | [Den cua hang? Thanh toan online? Trai nghiem?] | | | | | |
 | **Sau mua** | [Hai long? Review? Quay lai? Gioi thieu?] | | | | | |
 
+### Vi du dien san — Spa trung cap HCM
+
+| Giai doan | Diem cham | Hanh vi | Suy nghi | Cam xuc | Rao can | Co hoi |
+|-----------|-----------|---------|----------|---------|---------|--------|
+| Nhan biet | TikTok video before/after | Dung lai xem 15–30 giay | "Da nguoi ta that khong ta?" | To mo | Khong tin quang cao | Video UGC khong dung filter |
+| Tim hieu | Google "spa quan X", xem review FB | Doc 5–10 review, xem hinh | "Cho nay co dang tin khong?" | Phan van | Qua nhieu lua chon | Phan hoi review 3 sao chuyen nghiep |
+| Can nhac | Inbox hoi gia, hoi ban be | So sanh 2–3 spa | "Re hon? Co duoc khong?" | Lo lang | So ep mua, gia mo ho | Bao gia ro + cam ket khong ep ngay tin dau |
+| Quyet dinh | Nhan tin dat lich | Chon gio, xac nhan | "Hy vong nhu quang cao" | Hoi hop | Dat lich nhieu buoc | Dat 1 buoc qua Zalo/Messenger |
+| Trai nghiem | Den spa, lam dich vu | Quan sat khong gian, nhan vien | "Co dang tien khong?" | Danh gia lien tuc | Nhan vien upsell | Khong upsell lan dau — xay trust |
+| Sau mua | Khong co diem cham | Ve nha, cho ket qua | "Khong biet co quay lai khong" | Thu dong | Khong ai nhac | Follow-up ngay 3, hoi cam nhan + offer lan 2 |
+
 ### Xac dinh "Moment of Truth"
 
 | Moment | Mo ta | Hanh dong cua ban |
 |--------|-------|-------------------|
 | **Zero Moment (ZMOT)** | Khach search/hoi truoc khi den ban | SEO, review, noi dung giao duc |
-| **First Moment (FMOT)** | An tuong dau tien khi gap san pham/dich vu | Hinh anh, bao bi, giao dien website, profile kenh |
+| **First Moment (FMOT)** | An tuong dau tien khi gap san pham/dich vu | Hinh anh, giao dien website, profile kenh |
 | **Second Moment (SMOT)** | Trai nghiem thuc te khi dung | Chat luong dich vu, quy trinh, thai do nhan vien |
 | **Ultimate Moment (UMOT)** | Khach chia se trai nghiem | Khuyen khich review, referral, UGC |
 
@@ -214,36 +240,43 @@ va cam thay [cam xuc muc tieu].
 
 Khong phai moi phat hien deu la insight. Mot insight that phai vuot qua 3 bai kiem tra:
 
-### Bo 3 tieu chi
-
-| Tieu chi | Cau hoi kiem tra | Dat / Khong dat |
-|---------|-----------------|----------------|
-| **TRUE (Dung)** | Phat hien nay co dua tren du lieu/quan sat thuc te khong? Hay chi la gia dinh? | |
-| **TENSION (Cang thang)** | Co su mau thuan, kho xu, hoac nhu cau chua duoc giai quyet khong? | |
-| **ACTIONABLE (Hanh dong duoc)** | Ban co the lam gi voi insight nay? No dan den content, san pham, hoac chien luoc cu the khong? | |
+| Tieu chi | Cau hoi kiem tra |
+|---------|-----------------|
+| **TRUE (Dung)** | Phat hien nay co dua tren du lieu/quan sat thuc te khong? Hay chi la gia dinh? |
+| **TENSION (Cang thang)** | Co su mau thuan, kho xu, hoac nhu cau chua duoc giai quyet khong? |
+| **ACTIONABLE (Hanh dong duoc)** | Ban co the lam gi voi insight nay? No dan den content, san pham, hoac chien luoc cu the khong? |
 
 ### Vi du kiem chung
 
 | Phat hien | TRUE? | TENSION? | ACTIONABLE? | La insight? |
 |-----------|-------|---------|-------------|-------------|
-| "Phu nu 25–35 thich cham soc da" | Co, nhung qua chung | Khong co tension | Khong cu the | KHONG — qua chung chung |
-| "Ho biet da minh xau di nhung do loi thoi tiet, khong nghi den routine" | Co — thay trong comment | Co — mau thuan giua nhan biet va hanh dong | Co — content giao duc de thay doi nhan thuc | CO — insight manh |
-| "Ho muon di spa nhung so bi tu van ep mua them" | Co — review va inbox | Co — muon dich vu nhung so mat kiem soat | Co — cam ket khong upsell, gia minh bach | CO — insight manh |
+| "Phu nu 25–35 thich cham soc da" | Co, nhung qua chung | Khong co tension | Khong cu the | **KHONG** — qua chung chung |
+| "Ho biet da xau di nhung do loi thoi tiet, khong nghi den routine" | Co — thay trong comment | Co — mau thuan giua nhan biet va hanh dong | Co — content giao duc thay doi nhan thuc | **CO** — insight manh |
+| "Ho muon di spa nhung so bi tu van ep mua" | Co — thay trong review + inbox | Co — muon dich vu nhung so mat kiem soat | Co — cam ket khong upsell, gia minh bach | **CO** — insight manh |
 
 ---
 
-## Internal Monologue (Doc hieu nay chua noi)
+## Internal Monologue
 
 Khach hang khong bao gio noi thang nhung gi ho nghi. Phan nay ghi lai "giong noi ben trong":
 
-### Template Internal Monologue
+### Template
 
 | Giai doan | Ho noi | Ho thuc su nghi | Y nghia cho ban |
 |-----------|--------|-----------------|----------------|
-| Awareness | "Binh thuong thoi ma" | "Sao nguoi ta dep the nhi? Minh co van de gi khong?" | Content cham nhe, khong ep |
-| Consideration | "De xem cho nao tot" | "Nhieu qua, khong biet dau that dau gia, lo chon sai" | Content so sanh trung thuc, khong khoe |
-| Conversion | "De suy nghi da" | "Muon lam nhung chua dam — so mat tien, so khong hieu qua" | Giam rui ro: trial, bao hanh, review that |
-| Post-purchase | "Ok duoc" | "Khong biet co nen quay lai khong — chua ai hoi tham" | Follow-up, cham soc sau ban, uu dai quay lai |
+| Awareness | | | |
+| Consideration | | | |
+| Conversion | | | |
+| Post-purchase | | | |
+
+### Vi du dien san — Spa trung cap HCM
+
+| Giai doan | Ho noi | Ho thuc su nghi | Y nghia cho ban |
+|-----------|--------|-----------------|----------------|
+| Awareness | "Da xau di nhung do thoi tiet thoi" | "Sao ban be ai cung da dep the? Minh co van de gi khong?" | Content goi nhan ra nhe — khong phan xet, khong giat tit |
+| Consideration | "De xem may cho roi tinh" | "Nhieu spa qua, khong biet that hay quang cao. Lo ton tien ma khong hieu qua?" | Review that + quy trinh minh bach + cam ket ro |
+| Conversion | "De suy nghi them da" | "Muon lam nhung so vao bi ep mua goi. Khong biet gia thuc te bao nhieu." | Bao gia ro trong tin nhan dau — cam ket khong ep |
+| Post-purchase | "On, lam duoc" | "Khong biet co quay lai khong — chua thay ai hoi tham gi." | Follow-up ngay 3, hoi cam nhan — dung chi gui voucher |
 
 ### Nguon de capture Internal Monologue
 
@@ -257,11 +290,9 @@ Khach hang khong bao gio noi thang nhung gi ho nghi. Phan nay ghi lai "giong noi
 
 ---
 
-## Phan tang hanh vi (Behavioral Segmentation)
+## Phan Tang Hanh Vi (Behavioral Segmentation)
 
-Vuot qua demographics — phan loai theo hanh vi thuc te:
-
-### 6 chieu phan tang
+Vuot qua demographics — phan loai theo hanh vi thuc te. Day la 6 chieu phan tich ly thuyet:
 
 | Chieu | Cach phan loai | Vi du phan khuc |
 |-------|---------------|----------------|
@@ -272,39 +303,31 @@ Vuot qua demographics — phan loai theo hanh vi thuc te:
 | **Giai doan vong doi** | Moi / Dang dung / Ngung / Quay lai | Khach moi vs Khach churn vs Khach win-back |
 | **Muc do trung thanh** | Chua trung thanh / Trung thanh / Advocate | Khach mua vi gia vs Khach mua vi brand |
 
-### Bang phan tang hanh dong
-
-| Phan khuc | Dac diem | Content phu hop | Kenh | Uu dai |
-|-----------|---------|----------------|------|--------|
-| Khach moi (chua mua) | Moi biet den, dang tim hieu | TOFU: giao duc, social proof | TikTok, Facebook, Google | Trial, dung thu |
-| Khach da mua 1 lan | Da trai nghiem, chua quay lai | MOFU: gia tri them, case study | Zalo OA, Email | Uu dai lan 2 |
-| Khach quay lai (2+) | Hai long, co thoi quen | Retention: doc quyen, VIP | Zalo, Email, Community | Loyalty tier |
-| Khach VIP (5+) | Trung thanh, san sang gioi thieu | Referral: chuong trinh gioi thieu | 1:1, Event, Group VIP | Referral bonus |
-| Khach churn | Da mua nhung ngung | Win-back: hoi ly do, uu dai dac biet | Email, SMS, Zalo | Comeback offer |
+> **Hanh dong cu the cho tung phan khuc** — xem `30-retention-strategy`
 
 ---
 
 ## Cross-reference
 
-- Can biet doi thu dang nham vao ai? → Dung `08-nghien-cuu-doi-thu`
-- Can viet content dua tren insight? → Dung `05-copy-quang-cao` hoac `04-script-video`
-- Can xay hanh trinh khach hang day du? → Dung `02-brief-chien-dich`
-- Can tinh ngan sach theo phan khuc khach hang? → Dung `10-tinh-kpi-nguoc`
-- Can ke hoach tong the? → Dung `00-ke-hoach-mkt`
+| Khi can | Goi skill |
+|---------|-----------|
+| Nghien cuu doi thu dang nham vao ai | `08-nghien-cuu-doi-thu` |
+| Viet content dua tren insight | `05-copy-quang-cao` hoac `04-script-video` |
+| Xay hanh trinh khach hang day du cho chien dich | `02-brief-chien-dich` |
+| Ke hoach giu chan + win-back theo phan khuc | `30-retention-strategy` |
+| Ke hoach marketing tong the | `00-ke-hoach-mkt` |
 
 ---
 
-## Checklist chat luong
-
-Truoc khi giao bao cao, kiem tra:
+## Checklist Chat Luong
 
 - [ ] Da phan biet Consumer vs Shopper — neu khac nhau, co chien luoc rieng cho tung nguoi
-- [ ] Insight theo du 4 giai doan (Awareness, Consideration, Conversion, Retention)
+- [ ] Insight co du 4 giai doan (Awareness, Consideration, Conversion, Retention)
 - [ ] JTBD co du 3 tang: Functional, Emotional, Social
 - [ ] Persona co du 4 phan: Demographics, Psychographics, Behaviors, Media Consumption
 - [ ] Customer Journey co touchpoint, cam xuc, va rao can cu the — khong chung chung
 - [ ] Moi insight da qua bo 3 tieu chi: TRUE, TENSION, ACTIONABLE
 - [ ] Internal Monologue co du lieu ho tro (comment, inbox, review), khong phai tuong tuong
-- [ ] Phan tang hanh vi vuot qua demographics — co hanh dong cu the cho tung phan khuc
+- [ ] Phan tang hanh vi dung 6 chieu — action plan cho tung khuc chuyen sang skill 30
 - [ ] Khong co gia dinh thieu co so — moi ket luan phai co nguon hoac bang chung
 - [ ] Output dan den hanh dong cu the (content, ads, san pham), khong chi mo ta
