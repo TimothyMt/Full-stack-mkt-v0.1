@@ -21,6 +21,14 @@ related:
   - 04-script-video
   - 21-audit-ads-performance
   - references/quality-gates-vn
+context_requirements:
+  required: []
+  optional:
+    - industry        # co → dung benchmark dung nganh
+    - active_channels # co → skip hoi kenh can audit
+    - kpi_targets     # co → dung lam baseline so sanh, skip hoi KPI muc tieu
+    - team_size       # co → chon checklist phu hop (solo vs team)
+    - mode            # co → quick/full tu dong
 ---
 
 # Danh Gia Hieu Suat
@@ -29,52 +37,31 @@ related:
 
 ## Thu thap thong tin
 
-Hoi user toi da 4 cau truoc khi bat dau:
+### Buoc 0 — Nhan tu session_context
 
-1. **Kenh nao can audit?** Meta Ads / TikTok Ads / Google Ads / Organic TikTok / Facebook / Email / Tat ca?
-2. **So lieu hien tai?** Cung cap data: Spend, Impressions, Click, CTR, CPMess/CPL, So mess/lead, ROAS, thoi gian chay.
-3. **Van de dang gap?** CPMess tang / ROAS giam / Lead chat luong kem / Khong co don / Creative khong hieu qua?
-4. **Muc tieu la gi?** KPI muc tieu ban dau la bao nhieu? (CPMess, ROAS, so lead/don/thang)
+> Master Agent da inject session_context truoc khi skill nay chay. Dung truc tiep — KHONG hoi lai neu da co.
 
-### Auto-pull data qua MCP (neu co ket noi)
+- `active_channels` co → skip hoi kenh can audit
+- `kpi_targets` co → dung lam baseline so sanh, skip hoi KPI muc tieu
+- `industry` co → load benchmark dung nganh tu dong
+- `team_size` co → tu dong chon weekly checklist (solo vs team)
+- `mode` co → skip hoi quick/full
 
-> Neu user da setup MCP server, pull data tu dong thay vi yeu cau paste.
-> Xem huong dan: `skills/references/mcp-ads-integration.md`
-> **Meta Official MCP:** `https://mcp.facebook.com/ads` — setup 5 phut qua `claude.ai/settings/integrations`
+### Buoc 1 — Xac dinh mode output
 
-| Nen tang | MCP khuyen dung | Data pull |
-|----------|----------------|----------|
-| Meta Ads | **Meta Official MCP** (`mcp.facebook.com/ads`) | 29 tools — xem chi tiet ben duoi |
-| Meta Ads (alt) | Pipeboard (`mcp.pipeboard.co/meta-ads-mcp`) | 29 tools — targeting research manh hon |
-| Google Ads | Google Official MCP | GAQL query — cost, clicks, conversions, impression share |
-| TikTok Ads | TikTok Ads MCP | Campaign/ad group performance reports |
-| Nhieu nen tang | Adspirer ads-mcp | 222 metrics, cross-platform unified |
+> Skip neu `mode` da co trong session_context.
 
-**Meta Official MCP — Tools dung cho Danh gia hieu suat:**
+- **Quick** — Chay Diagnostic Tree → output Top 3 nguyen nhan + 3 action uu tien, doc tren Telegram
+- **Full** — Toan bo 9 phan, xuat file .md
 
-```
-DIAGNOSTIC (chan doan):
-  ads_insights_anomaly_signal             ← Tim KPI bat thuong vs baseline → feed vao 5 Whys
-  ads_insights_performance_trend          ← Xu huong 7/14/30 ngay → phat hien suy giam
+### Buoc 2 — Chi hoi nhung gi chua co (toi da 2 cau)
 
-BENCHMARK (so sanh):
-  ads_insights_industry_benchmark         ← CPM, CTR, CPC cua ban vs trung binh nganh
-  ads_insights_auction_ranking_benchmarks ← Quality ranking, engagement rate ranking vs doi thu
-  ads_insights_advertiser_context         ← Boi canh nganh va khu vuc
+1. **So lieu hien tai?** Spend, Impressions, CTR, CPMess/CPL, ROAS, thoi gian chay — paste thang hoac bao kenh nao can xem.
+2. **Van de dang gap?** CPMess tang / ROAS giam / Lead chat luong kem / Creative khong hieu qua / Khac?
 
-OPTIMIZATION:
-  ads_get_opportunity_score               ← Meta goi y co hoi toi uu → action plan
-  ads_get_dataset_quality                 ← Chat luong tracking (pixel + CAPI)
-```
+> **Luu y G9:** Neu impressions < 1,000 → KHONG chay diagnostic. Output duy nhat: *"Chua du data de phan tich — can them [X] ngay de dat 1,000 impr. Khong nen ket luan bat ky dieu gi luc nay."*
 
-**Quy trinh danh gia nhanh voi MCP:**
-```
-1. ads_insights_performance_trend → Co dang giam khong?
-2. ads_insights_anomaly_signal → KPI nao bat thuong?
-3. ads_insights_industry_benchmark → So voi nganh the nao?
-4. ads_get_opportunity_score → Meta goi y gi?
-→ Dien vao Benchmark Table + chay Diagnostic Tree
-```
+> **Neu tai khoan da ket noi:** Data se duoc pull tu dong — user khong can paste so lieu.
 
 ---
 
@@ -252,6 +239,8 @@ Health Score = Σ(Check_pass × W_severity × W_category) / Σ(Check_total × W_
 | Nganh | CPMess | Lead->Booking | Booking->Customer | AOV | Re-purchase |
 |-------|--------|---------------|-------------------|-----|-------------|
 | Beauty & Spa | 20–35K | 55–65% | 60–75% | 300K–1.5M | 20–35% (60 ngay) |
+| Clinic Tham my | 60–150K | 40–55% (Lead→Tu van) | 50–65% (Tu van→Deposit) | 3M–30M | 15–25% (90 ngay) |
+| Gym / Fitness | 25–45K | 50–65% (Lead→Trial) | 40–60% (Trial→Member) | 500K–3M/thang | 70–85% (gia han) |
 | F&B | 15–25K | -- | 40–55% (Lead→Order) | 80K–250K | 25–40% (30 ngay) |
 | Education | 80–200K (CPL) | -- | 5–15% (Lead→Enroll) | 2M–10M | -- |
 | E-commerce (Thoi trang) | 3–8K (CPC) | -- | 1–3% (Conv rate) | 250K–800K | -- |
@@ -368,28 +357,70 @@ Khi gap van de, hoi "Tai sao?" 5 lan de tim nguyen nhan goc:
 - **1 tuan dot bien** → kiem tra yeu to ben ngoai (mua le, doi thu, algorithm)
 - **On dinh 4+ tuan** → can breakthrough, thu creative/audience moi
 
+> **Kiem tra seasonal context truoc khi ket luan:** Cac giai doan sau thuong lam data bi lech — dung ket luan xu huong xau neu dang trong mua nay:
+> - **Tet Nguyen Dan (T1–T2):** CPM tang 30–50%, engagement tang — binh thuong
+> - **He (T6–T8):** F&B, giai tri tang; Beauty giam nhe
+> - **Back-to-school (T8–T9):** Education tang; F&B giam
+> - **Black Friday / Sale lon (T11):** E-commerce tang manh, CPM tang 20–30%
+> - **8/3, 20/10:** Beauty, F&B tang — nen chay campaign, khong phai xu huong bat thuong
+
 ---
 
 ## Phan 7 — 48h Action Plan
 
-> Ap dung khi phat hien van de can xu ly gap.
+> Action plan duoc generate **dua tren ket qua Diagnostic Tree** (Phan 1) — khong phai template co dinh.
+> Chon template phu hop voi nguyen nhan da xac dinh. Neu nhieu nguyen nhan → gop cac action tuong ung.
 
-### Template action plan
+### Template A — Creative Fatigue / CTR thap
 
-| STT | Thoi gian | Hanh dong | Muc do | Ket qua ky vong | Nguoi TH |
-|-----|----------|-----------|--------|-----------------|----------|
-| 1 | Trong 2h | Pause creative/ad set co CPA > 2x target | **CRITICAL** | Ngung chay mau ngan sach | [ten] |
-| 2 | Trong 4h | Phan tich data chi tiet: creative nao, audience nao, gio nao | **CRITICAL** | Xac dinh nguyen nhan | [ten] |
-| 3 | Trong 8h | Duplicate winning ad set, test creative moi | **HIGH** | Co creative thay the | [ten] |
-| 4 | Trong 12h | Dieu chinh audience: loai tru overlap, test LAL moi | **HIGH** | Giam frequency | [ten] |
-| 5 | Trong 24h | A/B test 3 hook moi cho creative | **HIGH** | Tim hook tot hon | [ten] |
-| 6 | Trong 24h | Kiem tra landing page/inbox flow | **MEDIUM** | Fix leak trong funnel | [ten] |
-| 7 | Trong 36h | Review ket qua thay doi, so sanh | **MEDIUM** | Co data de quyet dinh tiep | [ten] |
-| 8 | Trong 48h | Bao cao va de xuat ke hoach tuan tiep | **MEDIUM** | Ke hoach cu the | [ten] |
+*Dung khi: CTR < 1%, frequency > 2.5, creative chay > 7 ngay*
+
+| Thoi gian | Hanh dong | Muc do | Ket qua ky vong |
+|----------|-----------|--------|-----------------|
+| Trong 2h | Pause creative co CTR thap nhat, giu lai 1–2 creative tot nhat | **CRITICAL** | Ngung lang phi budget |
+| Trong 8h | San xuat 3 creative moi voi hook khac biet hoan toan | **HIGH** | Co creative thay the |
+| Trong 24h | A/B test 3 hook moi song song voi creative cu | **HIGH** | Tim hook tot hon |
+| Trong 48h | Review CTR + CPMess cua creative moi, scale neu CTR > 1.5% | **MEDIUM** | Xac dinh winner moi |
+
+### Template B — Audience Saturation / Frequency cao
+
+*Dung khi: frequency > 4, reach > 70% audience size, overlap > 30%*
+
+| Thoi gian | Hanh dong | Muc do | Ket qua ky vong |
+|----------|-----------|--------|-----------------|
+| Trong 2h | Gop cac ad set bi overlap > 30% | **HIGH** | Giam canh tranh noi bo |
+| Trong 8h | Mo rong LAL tu 1% len 3–5%, test broad targeting | **HIGH** | Tiep can audience moi |
+| Trong 24h | Chuyen mot phan budget sang kenh khac (TikTok neu dang chay Meta) | **MEDIUM** | Diversify reach |
+| Trong 48h | Tang organic content de mo rong funnel mien phi | **MEDIUM** | Giam phu thuoc paid |
+
+### Template C — Funnel Leak / CTR tot nhung it don
+
+*Dung khi: CTR > 2% nhung ROAS < 2x, mess nhieu nhung it booking*
+
+| Thoi gian | Hanh dong | Muc do | Ket qua ky vong |
+|----------|-----------|--------|-----------------|
+| Trong 2h | Kiem tra response time inbox — neu > 30 phut la van de | **CRITICAL** | Xac dinh diem leak |
+| Trong 8h | Review toan bo script chot: tu "Xin chao" den chot gia | **HIGH** | Tim diem yeu trong tu van |
+| Trong 24h | Test lại CTA trong creative: cu the hon ("Nhan tin de duoc tu van mien phi") | **HIGH** | Tang chat luong mess |
+| Trong 48h | Training lai sales neu Lead→Booking < 40% | **MEDIUM** | Tang ti le chuyen doi |
+
+### Template D — Vi pham Quality Gate / Van de he thong
+
+*Dung khi: vi pham G1 (CPA > 3x), G3 (dang learning), G4 (pixel loi), G8 (scale qua nhanh)*
+
+| Gate vi pham | Hanh dong bat buoc | Khong duoc lam |
+|-------------|-------------------|----------------|
+| **G1** CPA > 3x | Pause ad set NGAY | Khong tang budget de "co them data" |
+| **G3** Learning phase | KHONG chinh sua bat ky thu gi | Khong doi audience, bid, budget |
+| **G4** Pixel loi | Fix tracking TRUOC khi chay bat ky thu gi | Khong chay ads khi data sai |
+| **G8** Scale > 20%/72h | Giam toc do tang, toi da 20%/lan | Khong tang 2x budget 1 lan |
 
 ---
 
 ## Phan 8 — Weekly Optimization Checklist
+
+> **Neu team 1–2 nguoi (solo/small):** Chi focus **Thu 2 + Thu 4** — chon 3 action quan trong nhat moi ngay.
+> **Neu team 3+ nguoi:** Chay full checklist theo lich duoi day.
 
 ### Thu 2 — Review tuan truoc
 

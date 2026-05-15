@@ -19,6 +19,13 @@ related:
   - 09-insight-khach-hang
   - 15-social-listening
   - references/hook-formulas-vn
+context_requirements:
+  required: []
+  optional:
+    - industry        # co → dung vi du Content Matrix dung nganh, skip hoi nganh
+    - active_channels # co → skip cau hoi kenh
+    - source_type_mix # co → dung luon, khong hoi lai
+    - team_size       # co → tu dong ap template phu hop (1 nguoi / 2-3 / 4+)
 ---
 
 # Lich Noi Dung
@@ -27,12 +34,14 @@ related:
 
 ## Thu thap thong tin
 
-### Buoc 0 — Doc customer_memory
+### Buoc 0 — Nhan tu session_context
 
-Truoc khi hoi, kiem tra memory:
-- `business.industry` co roi → dung vi du Content Matrix dung nganh, khong hoi lai
-- `marketing_status.running_channels` co roi → skip cau hoi kenh
-- `source_type_mix` co roi (tu Skill 00) → dung luon, khong hoi lai
+> Master Agent da inject session_context truoc khi skill nay chay. Dung truc tiep — KHONG hoi lai neu da co.
+
+- `industry` co → dung vi du Content Matrix dung nganh, skip cau hoi nganh
+- `active_channels` co → skip Buoc 2 cau 1 (kenh dang co)
+- `source_type_mix` co → dung luon, khong quyet dinh lai
+- `team_size` co → tu dong chon template (1 nguoi / 2–3 / 4+), skip Buoc 3
 
 ### Buoc 1 — Xac dinh mode output
 

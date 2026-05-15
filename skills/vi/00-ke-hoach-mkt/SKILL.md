@@ -24,6 +24,13 @@ related:
   - 01-lich-noi-dung
   - 02-brief-chien-dich
   - 03-danh-gia-hieu-suat
+context_requirements:
+  required: []
+  optional:
+    - industry        # co → skip Buoc 2 detect nganh
+    - business_stage  # co → skip hoi giai doan kinh doanh
+    - objectives      # co → skip hoi muc tieu
+    - budget          # co → skip hoi ngan sach
 ---
 
 # Ke Hoach Fullstack Marketing
@@ -34,11 +41,12 @@ related:
 
 ## Thu thap thong tin
 
-### Buoc 0 — Doc customer_memory
+### Buoc 0 — Nhan tu session_context
 
-Truoc khi hoi, kiem tra memory:
-- `business.industry` co roi → skip cau hoi nganh, load variant tuong ung
-- `business.industry` chua co → hoi cau 1 duoi day, luu vao memory sau khi biet
+> Master Agent da inject session_context truoc khi skill nay chay. Dung truc tiep — KHONG hoi lai neu da co.
+
+- `industry` co → skip Buoc 2, load variant nganh tuong ung ngay
+- `industry` chua co → hoi detect nganh o Buoc 2, Master Agent cap nhat session_context
 
 ### Buoc 1 — Xac dinh mode output
 
@@ -391,7 +399,7 @@ Skill nay la master — goi cac skill con theo thu tu:
 ```
 
 Khi user yeu cau ke hoach marketing:
-1. Doc customer_memory — neu da co industry, skip cau hoi nganh
+1. Kiem tra session_context — neu da co industry, skip cau hoi nganh
 2. Xac dinh mode: quick hay full
 3. Neu chua co industry → detect tu input, luu vao memory
 4. Hoi 3 cau con lai (muc tieu, ngan sach, FGC)

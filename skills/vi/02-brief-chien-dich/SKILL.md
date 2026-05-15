@@ -19,6 +19,14 @@ related:
   - 05-copy-quang-cao
   - 06-brief-ugc-egc
   - 09-insight-khach-hang
+context_requirements:
+  required: []
+  optional:
+    - industry          # co → skip hoi lai thuong hieu/nganh o Section 1
+    - active_channels   # co → dung luon cho Channel System (Section 6)
+    - customer_profile  # co → Section 3 chi hoi neu segment khac
+    - team_size         # co → skip Buoc 4 hoi so nguoi
+    - team_roles        # co → build RACI truc tiep voi ten thuc te
 ---
 
 # Brief Chien Dich
@@ -27,12 +35,14 @@ related:
 
 ## Thu thap thong tin
 
-### Buoc 0 — Doc customer_memory
+### Buoc 0 — Nhan tu session_context
 
-Truoc khi hoi, kiem tra memory:
-- `business.*` co roi → skip hoi lai thong tin thuong hieu, nganh, khach hang
-- `marketing_status.running_channels` co roi → dung luon cho Channel System
-- `customer_profile.*` co roi → Section 3 chi hoi them neu campaign nay co segment khac
+> Master Agent da inject session_context truoc khi skill nay chay. Dung truc tiep — KHONG hoi lai neu da co.
+
+- `industry` + `business.*` co → skip hoi lai thong tin thuong hieu, nganh
+- `active_channels` co → dung luon cho Channel System (Section 6)
+- `customer_profile` co → Section 3 chi hoi them neu campaign nay co segment khac
+- `team_size` + `team_roles` co → build RACI truc tiep, skip Buoc 4
 
 ### Buoc 1 — Xac dinh mode output
 
