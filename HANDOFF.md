@@ -86,7 +86,7 @@ File: `sub-agents/master-agent-critic.md`
 2. **context_requirements trong YAML:** Khai báo fields cần từ session_context
 3. **Output format — ĐÃ ĐỔI:** ~~quick/full~~ → **Telegram** = bullet point tóm tắt ý chính | **Full** = file hoàn chỉnh xuất qua Google Sheet (link GG Sheet của owner)
 4. **Industry-adaptive:** detect ngành từ context, chỉ hỏi nếu chưa có
-5. **Resource-adaptive:** template thay đổi theo quy mô team (1 người / 2–3 người / 4+)
+5. **Resource-adaptive:** số bài/tuần = số người × 3–4; số kênh = min(số người + 1, 5) — không dùng tier cố định
 6. **Results-based timeline:** tiến theo kết quả đạt được, không theo lịch cố định
 7. **RACI với tên thật:** hỏi vai trò thực tế, mỗi deliverable đúng 1 A
 8. **Section markers trong output:** bắt buộc để Critic có thể flag chính xác
@@ -266,7 +266,8 @@ Paste vào đầu session:
 | Skill 02: thêm "Tạo offer chiến dịch" | ⏳ Việc tiếp theo | Sau skill 06 |
 | Skills 04–05, 08–09, 30–31: add #SECTION markers + ingest | ⏳ Chưa làm | Sau khi content review xong toàn bộ |
 | Skills 07, 10–29: content review | ⏳ Phase tiếp theo | Sau khi xong pre-launch set |
+| Supabase re-ingest skills 01, 02, 03 | ⏳ Cần làm | Đã modify sau lần ingest cuối — data stale |
+| Verify references tồn tại | ⏳ Todo | copy-frameworks-vn.md, quality-gates-vn.md trong skill 05 |
 | n8n setup production | ⏳ Deferred | Sau khi đủ skills ingested |
 | Fix output template (Haiku → Sonnet) | ⏳ Deferred | Đổi model trong telegram_bot.py |
-| .env.example: thêm ANTHROPIC_API_KEY + TELEGRAM_BOT_TOKEN | ⏳ Todo | |
-| .env.example: bổ sung ANTHROPIC_API_KEY + TELEGRAM_BOT_TOKEN | ⏳ Todo | File hiện chỉ có SUPABASE_* keys |
+| .env.example: thêm ANTHROPIC_API_KEY + TELEGRAM_BOT_TOKEN | ⏳ Todo | File hiện chỉ có SUPABASE_* keys |

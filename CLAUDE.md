@@ -86,10 +86,10 @@ Vi du: "viet copy quang cao" → kich hoat `05-copy-quang-cao`
 ### Skill chain (chuoi skill)
 
 Mot so skill goi skill khac tu dong:
-- `20-brief-client-intake` → goi `09-insight-khach-hang` + `08-nghien-cuu-doi-thu` + `10-tinh-kpi-nguoc` + `00-ke-hoach-mkt`
-- `00-ke-hoach-mkt` → goi `08-nghien-cuu-doi-thu` + `09-insight-khach-hang` + `10-tinh-kpi-nguoc`
+- `20-brief-client-intake` → goi `09-insight-khach-hang` + `08-nghien-cuu-doi-thu` + `00-ke-hoach-mkt`
+- `00-ke-hoach-mkt` → goi `08-nghien-cuu-doi-thu` + `09-insight-khach-hang`
 - `02-brief-chien-dich` → goi `05-copy-quang-cao` + `04-script-video` + `01-lich-noi-dung`
-- `07-bao-cao-marketing` → goi `03-danh-gia-hieu-suat` + `10-tinh-kpi-nguoc`
+- `07-bao-cao-marketing` → goi `03-danh-gia-hieu-suat`
 - `22-personal-brand-context` → goi `23-personal-brand-strategy` + `24-ai-avatar-production` (Phase 1 typical)
 - `26-thought-leadership-content` doc context → `04-script-video` (Personal Brand Mode) → `01-lich-noi-dung`
 - `27-personal-brand-monetize` → `14-email-marketing` + `18-referral-program`
@@ -98,9 +98,9 @@ Mot so skill goi skill khac tu dong:
 ### Workflow
 
 Workflow = chuoi skill chay lien tuc:
-- `client-onboard` = **20** → 09 → 08 → 10 → 00 → 02 → 01
+- `client-onboard` = **20** → 09 → 08 → 00 → 02 → 01
 - `campaign-launch` = 00 → 02 → 01 → 04 → 05 → 06 → 11
-- `monthly-cycle` = 13 → 03 → 07 → 01 → 10
+- `monthly-cycle` = 13 → 03 → 07 → 01
 - `content-production` = 09 → 01 → 04 → 06
 - `retention-cycle` = 30 → 31 → 05 → 01 → 14
 - `personal-brand-launch` = 22 → 23 → 24 → 25 → 26 → 04(personal) → 27 → 28 → 14
@@ -110,9 +110,9 @@ Workflow = chuoi skill chay lien tuc:
 ### Global Workflows (v2.5.0)
 
 Workflows phuc vu cluster Global (skills/en/):
-- `client-onboard-global` = 20 → 09 → 08 → 10 → 00 → 02 → 01 (all global)
+- `client-onboard-global` = 20 → 09 → 08 → 00 → 02 → 01 (all global)
 - `campaign-launch-global` = 08 → 09 → 00 → 02 → 01 + 04 + 05 → 06 → 11 + 12 (all global)
-- `monthly-cycle-global` = 13 → 03 → 07 → 10 → 01 (all global)
+- `monthly-cycle-global` = 13 → 03 → 07 → 01 (all global)
 - `content-production-global` = 01 review → 04 → 05 → 06 (all global)
 - `personal-brand-launch-global` = 22 → 23 → 24 → 26 → 04(personal) → 25 → 27 → 05(personal) → 28 → 14 (all global)
 - `ai-avatar-batch-global` = 26 → 04(personal) → ElevenLabs → HeyGen → 24(batch) → 01 (global)
@@ -164,20 +164,20 @@ Khi user da ket noi MCP server cho nen tang quang cao, cac skill co the pull dat
 | Cross-platform | — | Adspirer ads-mcp (175+ tools) |
 | Doi thu research | — | facebook-ads-library-mcp (15+ tools) |
 
-**Skills ho tro MCP:** 03, 07, 08, 10, 21
+**Skills ho tro MCP:** 03, 07, 08, 21
 
 ## Personal Brand Mode (skill 04 + 05)
 
-Skills 04 (script video), 05 (copy quang cao) tu dong chuyen mode khi doc context file:
-- `.agents/product-marketing-context.md` only → Mode A (sales/conversion)
-- `.agents/personal-brand-context.md` only → Mode B (authority/trust)
-- Both → skill HOI 1 cau truoc khi viet
-- Neither → skill suggest tao context file truoc
+Skills 04 (script video), 05 (copy quang cao) tu dong chuyen mode dua tren `session_context.mode`:
+- `session_context.mode = "product"` → Mode A (sales/conversion)
+- `session_context.mode = "personal_brand"` → Mode B (authority/trust)
+- Ca hai hoac khong ro → skill HOI 1 cau truoc khi viet
+- Khong co → mac dinh Mode A
 
-Khong can config thu cong — auto-detect.
+**Tren Claude Code (local):** skills doc tu `.agents/product-marketing-context.md` va `.agents/personal-brand-context.md`.
+**Tren Telegram/n8n:** Master Agent inject qua `session_context.mode` — khong can `.agents/` files.
 
-> **Luu y:** `.agents/` phai nam o **goc project** (cung cap voi CLAUDE.md cua project),
-> KHONG phai trong thu muc skills. Xem "Bat dau nhanh" o tren.
+Khong can config thu cong — auto-detect theo deployment context.
 
 ## Agents Universal Mode (v2.5.0+)
 
